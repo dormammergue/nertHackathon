@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var mongodb = require('mongodb');
 var cookieSession = require("cookie-session");
-var secrets = require('./secerts/secert.js');
+var secrets = require("./secrets/secrets.js");
 var db;
 
 // Connect to mongo (make sure mongo is running!)
@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({
 
 // Add req.session for each individual for to every request
 app.use(expressSession({
-	secret: secerts.expressSecret, // SECRET!
+	secret: secrets.expressSecret, // SECRET!
 	resave: false,
 	saveUninitialized: true,
 	})
