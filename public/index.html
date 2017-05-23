@@ -42,25 +42,25 @@
                 <br>
                 <div class="left-navigation">
                     <ul class="list">
-                        <h5><strong>WHEREABOUTS</strong></h5>
-                        <li>Home</li>
-                        <li>Office</li>
+                        <h5><strong>Stupid Social Network Channels</strong></h5>
+                        <li>Facebook</li>
+                        <li>Shitter</li>
+                        <li>StinkedIn</li>
+                        <li>Whyspace</li>
+                        <li>Stack OverHoe</li>
+                        <li>Reddit</li>
+                        <li>Borechan</li>
+                        <li>UnCrapped</li>
+                        <li>Yelp</li>
+                    </ul>
+                    <ul class="list">
+                        <h5><strong>Miscellaneous Ner̃tiness</strong></h5>
+                        <li>Facebook</li>
+                        <li>Twitter</li>
                         <li>School</li>
                         <li>Gym</li>
                         <li>Art Class</li>
                         <li>Hike Club</li>
-                    </ul>
-
-                    <br>
-
-                    <ul class="list">
-                        <h5><strong>HOBBIES</strong></h5>
-                        <li>Hiking</li>
-                        <li>Rafting</li>
-                        <li>Badminton</li>
-                        <li>Tennis</li>
-                        <li>Sketching</li>
-                        <li>Horse Riding</li>
                     </ul>
                 </div>
             </div>
@@ -71,10 +71,10 @@
                     <h2>Do you hate people but like making fun of them?</h2>
                     <h3>You've found the right place! Here at Ner̃t, we don't discriminate what you hate!&trade;
                 </div>
+                <hr>
                 <div id='newsfeed'>
-                    <span id='user'></span><b><u><span id='title'></span></b></u>
-                    <hr>
-                    <br><br><span id='mainNewsBody'></span>
+                    <span id='user'></span><h3><b><u><span id='title'></span></b></u></h3>
+                    <span id='mainNewsBody'></span>
                 </div>
             </div>
         </div>
@@ -89,8 +89,17 @@
 </body>
 
 <script>
-        $('#user').append('a stupid string!');
+        $('#user').append(pickRandom(moderatelyInsultingUsernames));
+        $('#title').append('Here is a title of a stupid string!');
+        $('#mainNewsBody').append('this is an article thing we will bring in from the mongo db')
 
+
+///eventually we will do a for loop and append this document for every article thing in the database
+
+//               <div id='newsfeed'>
+//                     <span id='user'></span><h3><b><u><span id='title'></span></b></u></h3>
+//                     <span id='mainNewsBody'></span>
+//                 </div>
 </script>
 
 </html>
