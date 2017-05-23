@@ -1,4 +1,8 @@
 data
 node_modules
 DS_Store
+*.sqlite
+.vs/ProjectSettings.json
+.vs/config/applicationhost.config
+.DS_Store
 secrets
