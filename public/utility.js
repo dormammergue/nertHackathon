@@ -108,6 +108,6 @@ function getMsMultiplierFromUnit(intervalUnit) {
 
 
 //Example usages
-pickRandomAtInterval(uninspirationalQuotes, 2, "second");
-pickRandomAtInterval(moderatelyInsultingUsernames, 2, "second", "$(.*)");
-console.log(pickRandom(mildlyInsultingUsernames));
+// pickRandomAtInterval(uninspirationalQuotes, 2, "second");
+// pickRandomAtInterval(moderatelyInsultingUsernames, 2, "second", "$(.*)");
+// console.log(pickRandom(mildlyInsultingUsernames));
