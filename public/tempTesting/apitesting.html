@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>API Testing</title>
+
+     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="./styles.css">
+    <script src='./utility.js'></script>
+</head>
+<body>
+    <div id="display-result"></div>
+    <button id="test-get-rants">Get Rants</button>
+    <button id="test-post-rant">Post New Rant</button>
+    <button id="test-post-response">Post Response</button>
+    <script>
+        //Get all rants
+        $("#test-get-rants").click(function () {
+            $.get("/api/rants", function (data) {
+                console.log(data);
+                $("#display-results").text(data);
+            })
+        })
+
+        //Post a rant
+        $("#test-post-rant").click(function () {
+
+            var newRant = {
+                rant: "GitHub merge conflicts suck",
+                channel: "Shitter",
+            }
+            $.post("/api/newRant/", newRant, function (data) {
+                $("#display-result").text("Created Rant");
+            })
+        })
+
+        //Get a rant
+
+        //Post a response about a rant
+        $("#test-post-response").click(function () {
+            var response = "This rant is pedantic!";
+            var rantId = "59247a82df4d5d60383880b6";
+
+                //ObjectId("59247a82df4d5d60383880b6")
+
+            $.post(`/api/response/${rantId}`).click()
+
+
+        })
+
+
+    </script>
+    
+</body>
+</html>
