@@ -1,12 +1,25 @@
 {
   "name": "nertHackathon",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dormammergue/nertHackathon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dormammergue/nertHackathon/issues"
+  },
+  "homepage": "https://github.com/dormammergue/nertHackathon#readme",
+  "description": ""
 }
