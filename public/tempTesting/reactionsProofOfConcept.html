@@ -3,7 +3,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>REACTIONS TESTING</title>
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -14,15 +14,9 @@
         <span class="like-btn">
             <!-- Default like button -->
             <span class="like-btn-emo like-btn-default"></span> <!-- Default like button emotion-->
-            <span class="like-btn-text">Like</span> <!-- Default like button text,(Like, wow, sad..) default:Like  -->
+            <span class="like-btn-text">Gripe</span> <!-- Default like button text,(Like, wow, sad..) default:Like  -->
             <ul class="reactions-box">
-                <!-- Reaction buttons container-->
-                <li class="reaction reaction-like" data-reaction="Like"></li>
-                <li class="reaction reaction-love" data-reaction="Love"></li>
-                <li class="reaction reaction-haha" data-reaction="HaHa"></li>
-                <li class="reaction reaction-wow" data-reaction="Wow"></li>
-                <li class="reaction reaction-sad" data-reaction="Sad"></li>
-                <li class="reaction reaction-angry" data-reaction="Angry"></li>
+                <!-- Reactions html is dynamically created in js and appended in here -->
             </ul>
         </span>
         <div class="like-stat">
@@ -31,15 +25,92 @@
                 <!-- like emotions container -->
                 <span class="like-btn-like"></span> <!-- given emotions like, wow, sad (default:Like) -->
             </span>
-            <span class="like-details">Arkaprava Majumder and 1k others</span>
         </div>
     </div>
     <!-- Reaction system end -->
     <script>
+        //TODO: get reaction types and images from DB
+        var imageFolderPath = "../images/reactionsImages/";
+        var reactions = [
+            {
+                className: "angry",
+                displayName: "Angry",
+                imagePath: imageFolderPath + "angry.gif",
+                color:"red"
+            },
+            {
+                className: "annoyed",
+                displayName: "Annoyed",
+                imagePath: imageFolderPath + "annoyed.gif",
+                color: "pink"
+            },
+            {
+                className: "self-righteous-prick",
+                displayName: "Self Righteous Prick",
+                imagePath: imageFolderPath + "self-righteous.jpg",
+                color: "blue"
+            },
+            {
+                className: "depressed",
+                displayName: "Depressed",
+                imagePath: imageFolderPath + "depressed.gif",
+                color: "green"
+            }
+        ]
+
+        function createReactionsListHtml(reactions) {
+            //dynamically creates the html for the different types of reactions
+            var reactionsHtml = "";
+
+            //loop through each reaction and create a tag for it
+            for (reaction of reactions) {
+                createReactionsCss(reaction)
+                var reactionHtml = `<li class="reaction reaction-${reaction.className}" data-reaction="${reaction.className}"></li>`
+                reactionsHtml += reactionHtml;
+            }
+            $(".reactions-box").append(reactionsHtml);
+        }
+
+        function createReactionsCss(reaction) {
+            
+            $("<style>")
+                .prop("type", "text/css")
+                .html(`
+                    .reaction-${reaction.className} {
+                        left: 300px;
+                        transition-delay: .25s;
+                        background-image: url('${reaction.imagePath}');
+                        background-color: ${reaction.color};
+                    }
+                    .reaction-${reaction.className}::before {
+                        content: '${reaction.displayName}'
+                    }
+                    .like-btn:hover .reaction-${reaction.className} {
+                        animation-delay: .2s
+                    }
+
+                    .like-btn-${reaction.className} {
+                        background-image: url('${reaction.imagePath}');
+                        background-repeat: no-repeat;
+                        background-size: auto;
+                        background-position: -17px -117px;
+                    }
+
+                    .like-btn-text-${reaction.className} {
+                        color: rgb(247, 113, 75);
+                    }
+            `).appendTo("head");
+        }
+
+
         $(document).ready(function () {
+
+            createReactionsListHtml(reactions);
+
+
             $(".reaction").on("click", function () {   // like click
                 var data_reaction = $(this).attr("data-reaction");
-                $(".like-details").html("You, Arkaprava Majumder and 1k others");
+                //$(".like-details").html("You, Arkaprava Majumder and 1k others");
                 $(".like-btn-emo").removeClass().addClass('like-btn-emo').addClass('like-btn-' + data_reaction.toLowerCase());
                 $(".like-btn-text").text(data_reaction).removeClass().addClass('like-btn-text').addClass('like-btn-text-' + data_reaction.toLowerCase()).addClass("active");;
 
@@ -51,7 +122,7 @@
 
             $(".like-btn-text").on("click", function () { // undo like click
                 if ($(this).hasClass("active")) {
-                    $(".like-btn-text").text("Like").removeClass().addClass('like-btn-text');
+                    $(".like-btn-text").text("Bitch").removeClass().addClass('like-btn-text');
                     $(".like-btn-emo").removeClass().addClass('like-btn-emo').addClass("like-btn-default");
                     $(".like-emo").html('<span class="like-btn-like"></span>');
                     $(".like-details").html("Arkaprava Majumder and 1k others");
@@ -76,12 +147,12 @@
             padding: 20px 20px 0 0;
         }
 
-            .like-btn:hover {
+        .like-btn:hover {
                 text-decoration: underline;
             }
 
         .like-btn-default {
-            background-image: url('../images/facebook.png');
+            background-image: url('../images/reactionsImages/angry.gif');
             background-repeat: no-repeat;
             background-size: auto;
             background-position: -277px -446px;
@@ -112,7 +183,7 @@
             display: inline-block;
             width: 48px;
             height: 48px;
-            position: absolute;
+            //position: absolute;
             top: 8px;
             opacity: 0;
             transform: scale(1, 1);
@@ -126,48 +197,12 @@
             display: block;
         }
 
-        .reaction-like {
-            left: 10px;
-            transition-delay: 0s;
-            background-image: url('../images/reactions_like.png');
-        }
-
-        .reaction-love {
-            left: 68px;
-            transition-delay: .05s;
-            background-image: url('../images/reactions_love.png');
-        }
-
-        .reaction-haha {
-            left: 126px;
-            transition-delay: .1s;
-            background-image: url('../images/reactions_haha.png');
-        }
-
-        .reaction-wow {
-            left: 184px;
-            transition-delay: .15s;
-            background-image: url('../images/reactions_wow.png');
-        }
-
-        .reaction-sad {
-            left: 242px;
-            transition-delay: .2s;
-            background-image: url('../images/reactions_sad.png');
-        }
-
-        .reaction-angry {
-            left: 300px;
-            transition-delay: .25s;
-            background-image: url('../images/reactions_angry.png');
-        }
-
-
-
         .like-btn:hover .reaction {
             opacity: 1;
             animation-name: reaction_delay;
             animation-duration: .5s;
+            border-radius: 25px;
+            margin:5px;
         }
 
         @keyframes reaction_delay {
@@ -190,24 +225,7 @@
             }
         }
 
-
-        .like-btn:hover .reaction-like {
-            animation-delay: 0s
-        }
-
-        .like-btn:hover .reaction-love {
-            animation-delay: .05s
-        }
-
-        .like-btn:hover .reaction-haha {
-            animation-delay: .1s
-        }
-
-        .like-btn:hover .reaction-wow {
-            animation-delay: .15s
-        }
-
-        .like-btn:hover .reaction-sad {
+        .like-btn:hover .reaction-annoyed {
             animation-delay: .2s
         }
 
@@ -221,13 +239,14 @@
         }
 
         .reaction::before {
-            display: inline-block;
+            display:inline-block;
+
             color: #ffffff;
             text-align: center;
             line-height: 17px;
             font-size: .7em;
-            width: 80%;
-            height: 17px;
+            width: 100%;
+            /*height: 17px;*/
             margin-left: 10%;
             background-color: rgba(0, 0, 0, 0.6);
             border-radius: 20px;
@@ -241,92 +260,8 @@
             opacity: 1
         }
 
-        .reaction-like::before {
-            content: 'Like'
-        }
-
-        .reaction-love::before {
-            content: 'Love'
-        }
-
-        .reaction-haha::before {
-            content: 'Haha'
-        }
-
-        .reaction-wow::before {
-            content: 'Wow'
-        }
-
-
-        .reaction-sad::before {
-            content: 'Sad'
-        }
-
-        .reaction-angry::before {
-            content: 'Angry'
-        }
-
         .like-stat {
             margin-top: 10px;
-        }
-
-
-        .like-btn-like {
-            background-image: url('../images/reaction-small.png');
-            background-repeat: no-repeat;
-            background-size: auto;
-            background-position: -17px -151px;
-        }
-
-        .like-btn-love {
-            background-image: url('../images/reaction-small.png');
-            background-repeat: no-repeat;
-            background-size: auto;
-            background-position: 0 -168px;
-        }
-
-        .like-btn-haha {
-            background-image: url('../images/reaction-small.png');
-            background-repeat: no-repeat;
-            background-size: auto;
-            background-position: 0 -151px;
-        }
-
-        .like-btn-wow {
-            background-image: url('../images/reaction-small.png');
-            background-repeat: no-repeat;
-            background-size: auto;
-            background-position: -17px -185px;
-        }
-
-        .like-btn-sad {
-            background-image: url('../images/reaction-small.png');
-            background-repeat: no-repeat;
-            background-size: auto;
-            background-position: -17px -168px;
-        }
-
-        .like-btn-angry {
-            background-image: url('../images/reaction-small.png');
-            background-repeat: no-repeat;
-            background-size: auto;
-            background-position: -17px -117px;
-        }
-
-        .like-btn-text-like {
-            color: rgb(88, 144, 255);
-        }
-
-        .like-btn-text-wow, .like-btn-text-haha, .like-btn-text-sad {
-            color: rgb(240, 186, 21)
-        }
-
-        .like-btn-text-love {
-            color: rgb(242, 82, 104)
-        }
-
-        .like-btn-text-angry {
-            color: rgb(247, 113, 75);
         }
 
         .like-emo > span {
@@ -336,12 +271,6 @@
             height: 16px;
             border: 1px solid #EEE;
             border-radius: 50%;
-        }
-
-        .like-details {
-            margin-left: 10px;
-            color: #9197a3;
-            font-size: 12px;
         }
     </style>
 </body>
