@@ -8,7 +8,12 @@ var mildlyInsultingUsernames = [
     "nert",
     "geek",
     "dingus",
-    "knuckledragger"
+    "knuckledragger",
+    "landlubber",
+    "yellow-bellied coward",
+    "chad",
+    "loser",
+    "wannabe"
 ];
 
 var moderatelyInsultingUsernames = [
@@ -20,13 +25,16 @@ var moderatelyInsultingUsernames = [
 var highlyInsultingUsernames = [
 
 ];
-
+///////////////////////////////////////////////////////////
+/////add modifiers to beginning of insulting usernames////
+/////////////////////////////////////////////////////////
 var modifiers = [
     "some",
     "a",
     "what a",
     "another",
-    "your typical"
+    "your typical",
+    "just a"
 ];
 
 //Many quotes found at http://imgur.com/gallery/0pat8
@@ -41,10 +49,15 @@ var uninspirationalQuotes = [
     "The only way to save the planet is to stop making new people"
 ];
 
+////////////////////////////////
+////////Create Random Username//
+////////////////////////////////
 function createRandomUsername(arryOfUsernames, arrayOfModifiers) {
     return pickRandom(arrayOfModifiers) + " " + pickRandom(arryOfUsernames);
 }
-
+////////////////////////////
+////Pick Random////////////
+//////////////////////////
 function pickRandom(array) {
     //selects a random whole number between 0 and one less than the length of the array (for 0 indexed array)
     var randomIndex = Math.floor(Math.random() * array.length);
@@ -114,8 +127,22 @@ function getMsMultiplierFromUnit(intervalUnit) {
         }
     }
 }
-
-
+   /////////////////////////////////////////
+  ////////CREATE RANDOM IMAGES ARRAY///////
+ ////for inserting image into newsfeed////
+/////////////////////////////////////////
+var imageLinks = [
+    "./images/miscAngry/0.gif",
+    "./images/miscAngry/1.png",
+    "./images/miscAngry/2.png",
+    "./images/miscAngry/3.gif",
+    "./images/miscAngry/4.png",
+    "./images/miscAngry/5.jpg",
+    "./images/miscAngry/6.jpeg",
+    "./images/miscAngry/7.png",
+    "./images/miscAngry/8.jpeg",
+    "./images/miscAngry/9.gif",
+];
 
 //Example usages
 // pickRandomAtInterval(uninspirationalQuotes, 2, "second");
