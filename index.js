@@ -49,6 +49,7 @@ app.use(function(req,res,next){
 	next();
 });
 
+
 // GET all rants
 app.get('/api/rants', function(req, res) {
 	db.collection('rants').find({}).toArray(function(err, data){
@@ -125,7 +126,7 @@ app.post('/api/newRant', function(req, res) {
 });
 
 // post an update reaction
-app.post('/api/updatereaction/:rantID', function(req,res){
+app.post('/api/updateReaction/:rantID', function(req,res){
 	db.collection('rants').findOneAndUpdate(
 		{
 		_id : req.query.rantId,
