@@ -62,7 +62,7 @@ app.get('/api/rants', function (req, res) {
     });
 });
 
-<<<<<<< HEAD
+
 //Post a new response 
 app.post('/api/response/:rantID', function(req,res){
 	if(req.session){
@@ -123,7 +123,7 @@ app.post('/api/newRant', function(req, res) {
 			}
 			res.send(data);
 	});
-=======
+
 // Post a new post
 app.post('/api/newRant', function (req, res) {
     if (req.session._id) {
@@ -160,7 +160,7 @@ app.post('/api/newRant', function (req, res) {
             }
             res.send(data);
         });
->>>>>>> origin/master
+origin/master
 });
 
 // post an update reaction
