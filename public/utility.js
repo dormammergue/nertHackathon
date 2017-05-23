@@ -15,11 +15,24 @@ var moderatelyInsultingUsernames = [
     "asshole",
     "craperson",
     "crapbucket"
-]
+];
 
 var highlyInsultingUsernames = [
 
-]
+];
+
+//Many quotes found at http://imgur.com/gallery/0pat8
+var uninspirationalQuotes = [
+    "Be yourself. No one else wants to be you",
+    "Eat like no one is going to see you naked",
+    "Working out is a great way to make your slow march towards death a little more attractive",
+    "Don't hate someone for what they look like on the outside. Hate them for what a piece of shit they are on the inside",
+    "True love is when two people lower their standards just the right amount",
+    "If you put an inspirational quote under your selfi no one can see your narcissism",
+    "People are really great as long as you don't get to know them",
+    "The only way to save the planet is to stop making new people"
+
+];
 
 
 function pickRandom(array) {
@@ -95,6 +108,6 @@ function getMsMultiplierFromUnit(intervalUnit) {
 
 
 //Example usages
-pickRandomAtInterval(moderatelyInsultingUsernames, 2, "second");
+pickRandomAtInterval(uninspirationalQuotes, 2, "second");
 pickRandomAtInterval(moderatelyInsultingUsernames, 2, "second", "$(.*)");
 console.log(pickRandom(mildlyInsultingUsernames));
