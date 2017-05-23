@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!--//https://coderexample.com/facebook-like-reaction-system/-->
+    <!-- Reaction system start -->
+    <div class="facebook-reaction">
+        <!-- container div for reaction system -->
+        <span class="like-btn">
+            <!-- Default like button -->
+            <span class="like-btn-emo like-btn-default"></span> <!-- Default like button emotion-->
+            <span class="like-btn-text">Like</span> <!-- Default like button text,(Like, wow, sad..) default:Like  -->
+            <ul class="reactions-box">
+                <!-- Reaction buttons container-->
+                <li class="reaction reaction-like" data-reaction="Like"></li>
+                <li class="reaction reaction-love" data-reaction="Love"></li>
+                <li class="reaction reaction-haha" data-reaction="HaHa"></li>
+                <li class="reaction reaction-wow" data-reaction="Wow"></li>
+                <li class="reaction reaction-sad" data-reaction="Sad"></li>
+                <li class="reaction reaction-angry" data-reaction="Angry"></li>
+            </ul>
+        </span>
+        <div class="like-stat">
+            <!-- Like statistic container-->
+            <span class="like-emo">
+                <!-- like emotions container -->
+                <span class="like-btn-like"></span> <!-- given emotions like, wow, sad (default:Like) -->
+            </span>
+            <span class="like-details">Arkaprava Majumder and 1k others</span>
+        </div>
+    </div>
+    <!-- Reaction system end -->
+    <script>
+        $(document).ready(function () {
+            $(".reaction").on("click", function () {   // like click
+                var data_reaction = $(this).attr("data-reaction");
+                $(".like-details").html("You, Arkaprava Majumder and 1k others");
+                $(".like-btn-emo").removeClass().addClass('like-btn-emo').addClass('like-btn-' + data_reaction.toLowerCase());
+                $(".like-btn-text").text(data_reaction).removeClass().addClass('like-btn-text').addClass('like-btn-text-' + data_reaction.toLowerCase()).addClass("active");;
+
+                if (data_reaction == "Like")
+                    $(".like-emo").html('<span class="like-btn-like"></span>');
+                else
+                    $(".like-emo").html('<span class="like-btn-like"></span><span class="like-btn-' + data_reaction.toLowerCase() + '"></span>');
+            });
+
+            $(".like-btn-text").on("click", function () { // undo like click
+                if ($(this).hasClass("active")) {
+                    $(".like-btn-text").text("Like").removeClass().addClass('like-btn-text');
+                    $(".like-btn-emo").removeClass().addClass('like-btn-emo').addClass("like-btn-default");
+                    $(".like-emo").html('<span class="like-btn-like"></span>');
+                    $(".like-details").html("Arkaprava Majumder and 1k others");
+
+                }
+            })
+        });
+
+    </script>
+    <style>
+        .facebook-reaction {
+            max-width: 100%;
+            margin: 150px auto;
+            padding: 0 60px;
+            position: relative;
+        }
+
+        .like-btn {
+            font-weight: bold;
+            color: #7f7f7f;
+            position: relative;
+            cursor: pointer;
+            padding: 20px 20px 0 0;
+        }
+
+            .like-btn:hover {
+                text-decoration: underline;
+            }
+
+        .like-btn-default {
+            background-image: url('../images/facebook.png');
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: -277px -446px;
+        }
+
+        .like-btn-emo {
+            display: inline-block;
+            margin: 0 6px -3px 0;
+            width: 16px;
+            height: 16px;
+        }
+
+        .reactions-box {
+            height: 44px;
+            width: 340px;
+            padding: 10px;
+            position: absolute;
+            top: -63px;
+            left: -14px;
+            box-shadow: 1px 1px 2px #cccccc, -1px 0px 2px #eeeeee;
+            border-radius: 44px 44px;
+            display: none;
+        }
+
+        .reaction {
+            list-style-type: none;
+            cursor: pointer;
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            position: absolute;
+            top: 8px;
+            opacity: 0;
+            transform: scale(1, 1);
+            transition: opacity .5s ease-in-out 1s, transform .07s ease-in-out 0s, top .07s ease-in-out 0s;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center
+        }
+
+        .like-btn:hover .reactions-box {
+            display: block;
+        }
+
+        .reaction-like {
+            left: 10px;
+            transition-delay: 0s;
+            background-image: url('../images/reactions_like.png');
+        }
+
+        .reaction-love {
+            left: 68px;
+            transition-delay: .05s;
+            background-image: url('../images/reactions_love.png');
+        }
+
+        .reaction-haha {
+            left: 126px;
+            transition-delay: .1s;
+            background-image: url('../images/reactions_haha.png');
+        }
+
+        .reaction-wow {
+            left: 184px;
+            transition-delay: .15s;
+            background-image: url('../images/reactions_wow.png');
+        }
+
+        .reaction-sad {
+            left: 242px;
+            transition-delay: .2s;
+            background-image: url('../images/reactions_sad.png');
+        }
+
+        .reaction-angry {
+            left: 300px;
+            transition-delay: .25s;
+            background-image: url('../images/reactions_angry.png');
+        }
+
+
+
+        .like-btn:hover .reaction {
+            opacity: 1;
+            animation-name: reaction_delay;
+            animation-duration: .5s;
+        }
+
+        @keyframes reaction_delay {
+            0% {
+                width: 48px;
+                height: 48px;
+                top: 60px;
+            }
+
+            48% {
+                width: 56px;
+                height: 56px;
+                top: 5px;
+            }
+
+            100% {
+                width: 48px;
+                height: 48px;
+                top: 8px;
+            }
+        }
+
+
+        .like-btn:hover .reaction-like {
+            animation-delay: 0s
+        }
+
+        .like-btn:hover .reaction-love {
+            animation-delay: .05s
+        }
+
+        .like-btn:hover .reaction-haha {
+            animation-delay: .1s
+        }
+
+        .like-btn:hover .reaction-wow {
+            animation-delay: .15s
+        }
+
+        .like-btn:hover .reaction-sad {
+            animation-delay: .2s
+        }
+
+        .like-btn:hover .reaction-angry {
+            animation-delay: .25s
+        }
+
+        .reaction:hover {
+            transform: scale(1.3, 1.3);
+            top: 2px
+        }
+
+        .reaction::before {
+            display: inline-block;
+            color: #ffffff;
+            text-align: center;
+            line-height: 17px;
+            font-size: .7em;
+            width: 80%;
+            height: 17px;
+            margin-left: 10%;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            position: absolute;
+            top: -25px;
+            opacity: 0;
+            transition: opacity .2s ease-in-out 0s;
+        }
+
+        .reaction:hover::before {
+            opacity: 1
+        }
+
+        .reaction-like::before {
+            content: 'Like'
+        }
+
+        .reaction-love::before {
+            content: 'Love'
+        }
+
+        .reaction-haha::before {
+            content: 'Haha'
+        }
+
+        .reaction-wow::before {
+            content: 'Wow'
+        }
+
+
+        .reaction-sad::before {
+            content: 'Sad'
+        }
+
+        .reaction-angry::before {
+            content: 'Angry'
+        }
+
+        .like-stat {
+            margin-top: 10px;
+        }
+
+
+        .like-btn-like {
+            background-image: url('../images/reaction-small.png');
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: -17px -151px;
+        }
+
+        .like-btn-love {
+            background-image: url('../images/reaction-small.png');
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: 0 -168px;
+        }
+
+        .like-btn-haha {
+            background-image: url('../images/reaction-small.png');
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: 0 -151px;
+        }
+
+        .like-btn-wow {
+            background-image: url('../images/reaction-small.png');
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: -17px -185px;
+        }
+
+        .like-btn-sad {
+            background-image: url('../images/reaction-small.png');
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: -17px -168px;
+        }
+
+        .like-btn-angry {
+            background-image: url('../images/reaction-small.png');
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: -17px -117px;
+        }
+
+        .like-btn-text-like {
+            color: rgb(88, 144, 255);
+        }
+
+        .like-btn-text-wow, .like-btn-text-haha, .like-btn-text-sad {
+            color: rgb(240, 186, 21)
+        }
+
+        .like-btn-text-love {
+            color: rgb(242, 82, 104)
+        }
+
+        .like-btn-text-angry {
+            color: rgb(247, 113, 75);
+        }
+
+        .like-emo > span {
+            display: inline-block;
+            margin: 0 -3px -3px 0px;
+            width: 16px;
+            height: 16px;
+            border: 1px solid #EEE;
+            border-radius: 50%;
+        }
+
+        .like-details {
+            margin-left: 10px;
+            color: #9197a3;
+            font-size: 12px;
+        }
+    </style>
+</body>
+</html>
