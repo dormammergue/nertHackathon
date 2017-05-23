@@ -5,4 +5,5 @@ secrets
 *.sqlite
 .vs/ProjectSettings.json
 .vs/config/applicationhost.config
-.vs/VSWorkspaceState.json
+.DS_Store
+secrets
