@@ -3,7 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var mongodb = require('mongodb');
-
+var cookieSession = require("cookie-session");
 var db;
 
 // Connect to mongo (make sure mongo is running!)
@@ -36,6 +36,19 @@ app.use(expressSession({
 	})
 );
 
+app.use(cookieSession({
+	name: "session",
+	keys:['keyboard cat'],
+	maxAge : 24*60*60*1000 //24hrs
+	})
+);
+
+app.use(function(req,res,next){
+	console.log(req.session);
+	console.log(req.url);
+	next();
+});
+
 // GET all rants
 app.get('/api/rants', function(req, res) {
 	db.collection('rants').find({}).toArray(function(err, data){
@@ -49,33 +62,57 @@ app.get('/api/rants', function(req, res) {
 	});
 });
 
-// Post a new post
-app.post('/api/newRant', function(req, res) {
-	if (req.session._id) {
-		//number of posts
-		//change icon
+//Post a new response 
+app.post('/api/response/:rantID', function(req,res){
+	if(req.session){
+		req.session.responseCount+= 1;
+	}else {
+		req.session.responseCount= 1;
 	}
-		// increment count of posts
+	db.collection('rants').findOneAndUpdate(
+		{
+		_id : req.query.rantId,
+		},
+		{
+		$push:{listOfResponse: req.body.response},
+		}, function(err, data) {
+			if (err) {
+				console.log(err);
+				res.status(500);
+				res.send("What you can't even inserting a comment right🙄");
+				return;
+			}
+			//console.log(data);
+			res.send(data);
+	});
+});
 
-// Add new post
+// Post a new rant
+app.post('/api/newRant', function(req, res) {
+// _id:responseID,
+// 				content:req.body,//.???
+// 				dateOfResponse:Date,
+// 				cookieCount: {
+// 					cookie: session._id
+	if(req.session){
+		req.session.rantCount+= 1;
+	}else {
+		req.session.rantCount= 1;
+	}
 	db.collection('rants').insertOne(
 	{
-		_id: postID,
+		_id: rantID,
+		content: req.body.rant,
 		channel: req.body.channel,
-		listOfResponse:
-			{
-				_id:responseID,
-				content:req.body,//.???
-				dateOfPost:Date
-			},
+		listOfResponse:[],
 		listOfReaction:
-			{
-				angryCat:number,
-				trashCan: number,
-				thumbsDown:number
-			}, 
-
-		},
+		{
+			angryCat:0,
+			trashCan:0,
+			thumbsDown:0
+		}, 
+		dateOfRant:Date,
+	},
 		function(err, data) {
 			if (err) {
 				console.log(err);
@@ -87,6 +124,25 @@ app.post('/api/newRant', function(req, res) {
 	});
 });
 
+// post an update reaction
+app.post('/api/updatereaction/:rantID', function(req,res){
+	db.collection('rants').findOneAndUpdate(
+		{
+		_id : req.query.rantId,
+		},
+		{
+		$push:{listOfReaction: req.body.reactions},
+		}, function(err, data) {
+			if (err) {
+				console.log(err);
+				res.status(500);
+				res.send("What you can't even add a reaction right🙄");
+				return;
+			}
+			//console.log(data);
+			res.send(data);
+	});
+});
 // serve files out of the static public folder (e.g. index.html)
 app.use(express.static('public'));
 
