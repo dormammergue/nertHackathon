@@ -6,3 +6,4 @@ DS_Store
 .vs/config/applicationhost.config
 .DS_Store
 secrets
+.vs/VSWorkspaceState.json
