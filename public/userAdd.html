@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Ner̃t: we don't discriminate what you hate</title>
+
+        <!--JQuERY ! THAT FUNKY QUERY!-->
+        <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+            crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+            crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="./styles.css">
+        <script src='./utility.js'></script>
+    </head>
+
+    <body>
+        <jumbotron><img src='./images/NERTtemp.png' width='100%'></jumbotron>
+        <div class="rantIntro">
+            <h1 class='newHeader'>Post a Rant!</h1>
+            <img src='./images/superTroll.gif' width='50%' height- '50%' id='maxTroll'>
+            <h2>Got something that really <span id='grind'>grinds your gears?</span></h2>
+            <h3>Post a rant! Other <span class='nertJerks'>Ner̃t Jerks</span> can respond and react to your rant!</h3>
+            <h4>Whether it be a reaction to a social media post, or some idiot you saw at Walmart, share with us and vent your
+                frustration!
+                <br>
+                <br>Be warned, we're not sissies here at Ner̃t. Be prepared to be admonished should your rants be anything
+                nicer than total jerkiness.</h4>
+            Wanna go back to the homepage? <a href='./index.html'>FINE! We didn't want to hear from you anyway!</a>
+        </div>
+        <br><br>
+        <div class='createNewRant'>
+
+            <span id='fakestUser'>Choose a Username:<br><input type='text' placeholder='Enter a Username' id='fakeUser'></span>
+            <br> Select a Channel for Your Rant:<br>
+            <select id='dropdown'>
+<option value=null>Select A Channel!</option>
+  <option value="facebook">Facebook/Facebook</option>
+  <option value="shitter">Twitter/Shitter</option>
+  <option value="stinkedIn">LinkedIn/StinkedIn</option>
+  <option value="whyspace">Myspace/Whyspace</option>
+  <option value="stackOverhoe">Stack Overflow/Stack Overhoe</option>
+  <option value='other'>Other/Miscellaneous</option>
+</select>
+
+            <br><br> Enter a Rant:<br>
+            <textarea class='newRant' placeholder="Enter your rant here! Don't be shy, let it alll out!" rows="10" cols="50"></textarea>
+            <br>
+            <button id='submitRant'>Submit Your Rant!</button>
+        </div>
+
+
+        <script>
+            $('#fakeUser').click(function () {
+                alert('Ha! You think we would let you choose your own username?! We will select one for you. Have a problem with that? Go to Facebook, with the rest of the sheep!')
+                $('#fakestUser').text('')
+            });
+//add: submitRant click listener
+//add: direct to correct collection based on option values
+//also wtf happened to indentation formatting? 
+//add something to bottom of the page? 
+        </script>
+    </body>
+
+</html>

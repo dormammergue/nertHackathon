@@ -54,12 +54,9 @@
                     </ul>
                     <ul class="list">
                         <h5><strong>Miscellaneous Ner̃tiness</strong></h5>
-                        <li>Facebook</li>
-                        <li>Twitter</li>
-                        <li>School</li>
-                        <li>Gym</li>
-                        <li>Art Class</li>
-                        <li>Hike Club</li>
+                        <li>Misc. Rants</li>
+                        <li>Terrible Pictures</li>
+                        <li>General Whining</li>
                     </ul>
                 </div>
             </div>
@@ -88,6 +85,7 @@
                     <span id='user3'></span>
                     <h4><b><u><span id='title3'></span></b></u></h4>
                     <span id='imagio3'></span><span id='mainNewsBody3'></span>
+                    
                 </div>
 
             </div>
@@ -119,6 +117,7 @@ $('#user3').append( 'user: <i>' + createRandomUsername(moderatelyInsultingUserna
         $('#title3').append('Some stupid shit from LinkedIn!!!');
         $('#imagio3').append('<img src="' + pickRandom(imageLinks)+ '" style=float:right;width:100px;height:100px;margin: 0 0 10px 10px>')
         $('#mainNewsBody3').append('I hate cheating and lying and fighting...my ex boyfriend cheated on me so since then i have to be single and i love to meet someone that is honest, open minded, caring, romantic and i love to meet someone special ok...i will love to meet someone cool and caring person trustworthy...hones t and cool person that can take care of me and i will be with him till the rest of my life and i will be caring and lovely to him if you only he can promise not to cheat on me.');
+        
 
 ///eventually we will do a for loop and append this document for every article thing in the database
 
@@ -126,8 +125,11 @@ $('#user3').append( 'user: <i>' + createRandomUsername(moderatelyInsultingUserna
 //                     <span id='user'></span><h3><b><u><span id='title'></span></b></u></h3>
 //                     <span id='mainNewsBody'></span>
 //                 </div>
+
+
 //    for each collection in database, 
     //append to main-content:
+    // <div id = db.collection._id>
     // <span id='user'> 'user: <i>' + createRandomUsername(moderatelyInsultingUsernames, modifiers) + '</i>');</span>
     //<span id='title'> db.collection.title[i] </span>
     //<span id="imagio">pickRandom(imageLinks)</span>
