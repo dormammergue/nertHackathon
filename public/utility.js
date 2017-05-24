@@ -19,7 +19,34 @@ var mildlyInsultingUsernames = [
 var moderatelyInsultingUsernames = [
     "asshole",
     "craperson",
-    "crapbucket"
+    "crapbucket",
+    "dork",
+    "dweeb",
+    "mouth breather",
+    "jerk",
+    "jerkoff",
+    "nerd",
+    "nert",
+    "geek",
+    "dingus",
+    "knuckledragger",
+    "landlubber",
+    "yellow-bellied coward",
+    "chad",
+    "loser",
+    "wannabe",
+    "dingbat",
+    "dumbass",
+    "failure",
+    "lah-ooo-hoo-OO-ser!",
+    "bro",
+    "upid-stay oser-lay",
+    "slobbery, mangy, stupid poacher",
+    "Theon Greyjoy",
+    "poser",
+    "dick-cheese",
+    "dillweed",
+    "bag of...well, you know"
 ];
 
 var highlyInsultingUsernames = [
@@ -34,7 +61,9 @@ var modifiers = [
     "what a",
     "another",
     "your typical",
-    "just a"
+    "just a",
+    "a bag of",
+    "a smelly"
 ];
 
 //Many quotes found at http://imgur.com/gallery/0pat8

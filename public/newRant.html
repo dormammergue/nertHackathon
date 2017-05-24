@@ -30,6 +30,7 @@
 
         <link rel="stylesheet" href="./styles.css">
         <script src='./utility.js'></script>
+        <script src='./app.js'></script>
     </head>
 
     <body>
@@ -50,7 +51,11 @@
         <div class='createNewRant'>
 
             <span id='fakestUser'>Choose a Username:<br><input type='text' placeholder='Enter a Username' id='fakeUser'></span>
+
+
             <br> Select a Channel for Your Rant:<br>
+
+
             <select id='dropdown'>
 <option value=null>Select A Channel!</option>
   <option value="facebook">Facebook/Wastebook</option>
@@ -73,8 +78,8 @@
                 alert('Ha! You think we would let you choose your own username?! We will select one for you. Have a problem with that? Go to Facebook, with the rest of the sheep!');
                 $('#fakestUser').prepend('<img src="./images/sheep.gif"><br>')
                 setTimeout(function () {
-					$('#fakestUser').text('');
-				}, 5000)
+                    $('#fakestUser').text('');
+                }, 5000)
             });
 //add: submitRant click listener
 //add: direct to correct collection based on option values
