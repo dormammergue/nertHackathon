@@ -76,10 +76,6 @@ app.get('/api/rants', function(req, res) {
 
 //Post a new response 
 app.post('/api/response/:rantID', function (req, res) {
-
-    console.log(req.params.rantID);
-    console.log(req.body.response);
-
 	if(req.session){
 		req.session.responseCount+= 1;
 	}else {
@@ -117,11 +113,10 @@ app.post('/api/newRant', function(req, res) {
 	}
 	db.collection('rants').insertOne(
 	{
-		_id: rantID,
 		content: req.body.rant,
 		channel: req.body.channel,
 		listOfResponse:[],
-		listOfReaction:
+		listOfGripes:
 		{
 			angryCat:0,
 			trashCan:0,
@@ -141,23 +136,106 @@ app.post('/api/newRant', function(req, res) {
 });
 
 // post an update reaction
-app.post('/api/updateReaction/:rantID', function(req,res){
-	db.collection('rants').findOneAndUpdate(
-		{
-		_id : req.query.rantId,
-		},
-		{
-		$push:{listOfReaction: req.body.reactions},
-		}, function(err, data) {
-			if (err) {
-				console.log(err);
-				res.status(500);
-				res.send("What you can't even add a reaction right🙄");
-				return;
-			}
-			//console.log(data);
-			res.send(data);
-	});
+app.post('/api/updateGripe/:rantID', function (req, res) {
+
+    //QUESTION: how to make it so if the user gets
+
+    console.log("got here");
+    console.log(req.params.rantID);
+    console.log(req.body.gripeType);
+
+    //////////////////////\
+
+
+
+    //query by rant and gripe key
+    db.collection("rants").findOne(
+        {
+            _id: objectId(req.params.rantID),
+            //listOfGripes[gripeType]: !null
+        }, function (err,rant) {
+            if (err) {
+                console.log(err);
+            }else if (!rant) {
+                console.log("Could not find rant");
+            }else{
+                console.log(rant);
+                var gripeType = req.body.gripeType;
+                console.log("Does gripe type exist", rant.listOfGripes[gripeType]);
+
+                //If rant exists and the gripeType exists, then increment the gripe type
+                if (rant.listOfGripes[gripeType] !== undefined) {
+                    console.log(`Gripe: ${gripeType} exists`);
+
+                    var gripeIncString = `listOfGripes.${gripeType}`
+                    console.log("GripeIncString", gripeIncString);
+                    var obj = {};
+                    //no way to create an object with dynamic key
+                    obj[gripeIncString] = 1;
+                    db.collection("rants").findOneAndUpdate(
+                        {
+                            _id: objectId(req.params.rantID)
+                        },
+                        {
+                            $inc: obj
+                        },
+                        function (err, data) {
+                            if (err) {
+                                console.log(err);
+                            }
+                            console.log(data);
+                        }
+                    )
+                } else {
+                    console.log("Could not find gripe")
+                }
+            }
+        }
+
+
+
+
+        
+    )
+
+    
+
+
+    /*
+        rant{
+            content = "sdfsdfsdfsdf",
+            channel = "shitter",
+            listOfResponse = ["res1", "response2"],
+            listOfGripes = {
+                "angry": 1,
+                "pissed-off": 2
+            }
+        }
+
+    */
+
+    console.log(req.params.rantID);
+    console.log(req.body.gripeType);
+
+
+
+
+	//db.collection('rants').findOneAndUpdate(
+	//	{
+	//	_id : req.params.
+	//	},
+	//	{
+	//	$push:{listOfReaction: req.body.reactions},
+	//	}, function(err, data) {
+	//		if (err) {
+	//			console.log(err);
+	//			res.status(500);
+	//			res.send("What you can't even add a reaction right🙄");
+	//			return;
+	//		}
+	//		//console.log(data);
+	//		res.send(data);
+	//});
 });
 
 // Post a new post
