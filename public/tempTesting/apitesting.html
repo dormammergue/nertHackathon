@@ -63,7 +63,7 @@
         $('#test-post-gripe').click(function () {
 
             var rantId = "5925c5d225a9f146c1b84b05";
-            var gripeType = "angryCat"
+            var gripeType = "angryAnt"
 
             $.post(`/api/updateGripe/${rantId}`, {gripeType: gripeType }, function (data) {
                 console.log(data);
