@@ -30,6 +30,8 @@
 
 <body>
     <jumbotron><img src='./images/NERTtemp.png' width='100%'></jumbotron>
+    
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-2 col-sm-4 sidebar1">
@@ -42,7 +44,7 @@
                     <ul class="list">
                         <br><br>
                         <h5><strong>Stupid Social Network Channels</strong></h5>
-                        <li>Facebook</li>
+                        <li><span id='facebook'>Wastebook</span></li>
                         <li>Shitter</li>
                         <li>StinkedIn</li>
                         <li>Whyspace</li>
@@ -58,9 +60,13 @@
                         <li>Terrible Pictures</li>
                         <li>General Whining</li>
                     </ul>
+                    <ul class=list>
+                        <h5><strong><a href='./userAdd.html'>POST A RANT!</a></strong></h5>
+                        </ul>
                 </div>
             </div>
             <div class="col-md-10 col-sm-8 main-content">
+                <marquee><span id='uninspirational'><b>UNINSPIRATIONAL QUOTES OF THE DAY: </b></span><span id='quote'></span></marquee>
                 <!--Main content code to be written here -->
                 <div id='welcomeMessage'>
                     <h1>Welcome to Ner̃t!</h1>
@@ -119,6 +125,7 @@ $('#user3').append( 'user: <i>' + createRandomUsername(moderatelyInsultingUserna
         $('#mainNewsBody3').append('I hate cheating and lying and fighting...my ex boyfriend cheated on me so since then i have to be single and i love to meet someone that is honest, open minded, caring, romantic and i love to meet someone special ok...i will love to meet someone cool and caring person trustworthy...hones t and cool person that can take care of me and i will be with him till the rest of my life and i will be caring and lovely to him if you only he can promise not to cheat on me.');
         
 
+$('#quote').append(pickRandomAtInterval(uninspirationalQuotes, 2, "second"));
 ///eventually we will do a for loop and append this document for every article thing in the database
 
 //               <div id='newsfeed'>
