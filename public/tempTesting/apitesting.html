@@ -49,12 +49,12 @@
         //Post a response about a rant
         $("#test-post-response").click(function () {
             var response = "This rant is pedantic!";
-            var rantId = "59247a82df4d5d60383880b6";
-
+            var rantId = "59247b0b0008e263fcca89ff";
                 //ObjectId("59247a82df4d5d60383880b6")
 
-            $.post(`/api/response/${rantId}`).click()
-
+            $.post(`/api/response/${rantId}`, { response: response },function (data) {
+                console.log(data);
+            })
 
         })
 

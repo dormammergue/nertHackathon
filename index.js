@@ -5,6 +5,7 @@ var expressSession = require('express-session');
 var mongodb = require('mongodb');
 var cookieSession = require("cookie-session");
 var secrets = require("./secrets/secrets.js");
+var objectId = require('mongodb').ObjectID;
 var db;
 
 // Connect to mongo (make sure mongo is running!)
@@ -40,7 +41,7 @@ app.use(expressSession({
 
 app.use(function (req, res, next) {
     //req.session.cookie.secure = false;
-    console.log("COOKIE:", req.session.cookie.secure);
+    //console.log("COOKIE:", req.session.cookie.secure);
     next();
 });
 
@@ -55,8 +56,8 @@ app.use(function (req, res, next) {
 
 
 app.use(function(req,res,next){
-	console.log(req.session);
-	console.log(req.url);
+	//console.log(req.session);
+	//console.log(req.url);
 	next();
 });
 
@@ -74,7 +75,11 @@ app.get('/api/rants', function(req, res) {
 });
 
 //Post a new response 
-app.post('/api/response/:rantID', function(req,res){
+app.post('/api/response/:rantID', function (req, res) {
+
+    console.log(req.params.rantID);
+    console.log(req.body.response);
+
 	if(req.session){
 		req.session.responseCount+= 1;
 	}else {
@@ -82,10 +87,11 @@ app.post('/api/response/:rantID', function(req,res){
 	}
 	db.collection('rants').findOneAndUpdate(
 		{
-		_id : req.query.rantId,
+		    _id : objectId(req.params.rantID)
 		},
-		{
-		$push:{listOfResponse: req.body.response},
+        {
+            //$set: { listOfResponse: req.body.response },
+		    $push:{ listOfResponse: req.body.response },
 		}, function(err, data) {
 			if (err) {
 				console.log(err);
@@ -93,7 +99,6 @@ app.post('/api/response/:rantID', function(req,res){
 				res.send("What you can't even inserting a comment right🙄");
 				return;
 			}
-			//console.log(data);
 			res.send(data);
 	});
 });
