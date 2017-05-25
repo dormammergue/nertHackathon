@@ -128,8 +128,12 @@
                         </div>
                         <div class='testy'>
                         </div>
+                        <div class='testy2'>
+                        
+                        </div>
                     </div>`
-            ); //closes out append after~display results
+            ); 
+            //closes out append after~display results
             $(".responseButton").click(function () {
                 var newComment =
                     `<div style="display: none;" class="new-link" name="link[]" >
@@ -139,6 +143,7 @@
                         Submit
                     </button>
                 </div>`
+
                 //append new comment to response box 
                 $(newComment)
                     .appendTo($('.responseBox')).slideDown("fast");
