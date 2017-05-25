@@ -70,6 +70,7 @@ app.get('/api/rants', function(req, res) {
 			res.send("error");
 			return;
 		}
+		console.log("RANTS:", data);
 		res.send(data);
 	});
 });
@@ -117,7 +118,7 @@ app.post('/api/newRant', function(req, res) {
 	}
 	db.collection('rants').insertOne(
 	{
-		_id: rantID,
+		// _id: rantID,
 		content: req.body.rant,
 		channel: req.body.channel,
 		listOfResponse:[],

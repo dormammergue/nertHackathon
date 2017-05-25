@@ -46,7 +46,9 @@ var moderatelyInsultingUsernames = [
     "poser",
     "dick-cheese",
     "dillweed",
-    "bag of...well, you know"
+    "bag of...well, you know",
+    "boolshitter",
+    "linter"
 ];
 
 var highlyInsultingUsernames = [

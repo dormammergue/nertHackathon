@@ -66,6 +66,7 @@
                 </div>
             </div>
             <div class="col-md-10 col-sm-8 main-content">
+                <!--MARQUEE of Uninspirational Quotes-->
                 <marquee><span id='uninspirational'><b>UNINSPIRATIONAL QUOTES OF THE DAY: </b></span><span id='quote'></span></marquee>
                 <!--Main content code to be written here -->
                 <div id='welcomeMessage'>
@@ -74,38 +75,8 @@
                     <h3>You've found the right place! Here at Ner̃t, we don't discriminate what you hate!&trade;
                 </div>
                 <hr>
-                <div class='newsfeed'>
-                    <span id='user'></span>
-                    <h4><b><u><span id='title'></span></b></u>
-                    </h4>
-                    <span id='imagio'></span><span id='mainNewsBody'></span>
+                <div class="display-results"></div>
 
-                </div>
-
-
-                <div class='newsfeed'>
-                    <span id='user2'></span>
-                    <h4><b><u><span id='title2'></span></b></u>
-                    </h4>
-                    <span id='imagio2'></span><span id='mainNewsBody2'></span>
-                    <br><br><br>
-                    <span id='clearButton'><button class='responseButton'>Leave a response!</button></span>
-                    <div id='responseBox'></div>
-                    <div id='testy'></div>
-                </div>
-
-
-
-                <div class='newsfeed'>
-                    <span id='user3'></span>
-                    <h4><b><u><span id='title3'></span></b></u>
-                    </h4>
-                    <span id='imagio3'></span><span id='mainNewsBody3'></span><br><br>
-
-
-
-
-                </div>
 
             </div>
         </div>
@@ -120,51 +91,134 @@
 </body>
 
 <script>
-    $('#user').append('user: <i>' + createRandomUsername(moderatelyInsultingUsernames, modifiers) + '</i>');
-    $('#title').append('Something stupid from facebook!');
-    $('#imagio').append('<img src="' + pickRandom(imageLinks) + '" style=float:right;width:100px;height:100px;margin: 0 0 10px 10px>')
-    $('#mainNewsBody').append('Kris and I often comment on the trite, cliche things people say about marriage/their spouse and how dishonoring and disrespectful they can be. When we were in New Orleans last week we overheard a conversation between a young girl and an older couple who had been married for 38 years. The girl asked the couple the common question, Whats the secret? The man responded, Go hard of hearing early. Really? Thats the best advice you have to give? You cant do any better after 38 years than some vapid quip? Call me crazy but I think how you talk about your marriage and your partner matters. Giving respect and honor is important.');
+    //Get all rants
+
+    $.get("/api/rants", function (rants) {
+        for (rant of rants) {
+            $(".display-results").after(`<div class='newsfeed'>
+                        <span class='user'>
+                            <i>${createRandomUsername(moderatelyInsultingUsernames, modifiers)}
+                            </i>
+                        </span>
+                        <br>
+                        <span class='title'>
+                            <h4>
+                                <b>
+                                    <u>Something stupid from 
+                                    ${rant.channel}
+                                    </u>
+                                </b>
+                            </h4>
+                        </span>
+                        <span class='contents'>
+                            ${rant.content} 
+                        </span>
+                        <div class="images">
+                            <img src='.${pickRandom(imageLinks)}' class='imagio'>
+                        </div>
+                        <div class='responseDiv'>
+                            <span class='clearButton'>
+                                <button class='responseButton'>
+                                    Leave a response!
+                                 </button>
+                            </span>
+                            <div class='responseBox'>
+                            </div>
+                            
+                        </div>
+                        <div class='testy'>
+                        </div>
+                    </div>`
+            ); //closes out append after~display results
+           
+        } //closes out for loop 
+ $(".responseButton").click(function () {
+                var newComment =
+                    `<div style="display: none;" class="new-link" name="link[]" >
+                    <textarea cols="40" rows="1" class="newResponse" placeholder="enter a response!"/>
+                    <br>
+                    <button id="submitbutton" data-rantID="${rant._id}">
+                        Submit
+                    </button>
+                </div>`
+                //append new comment to response box 
+                $(newComment)
+                    .appendTo($('.responseBox')).slideDown("fast");
+                //clear response button
+                $('.clearButton').text('');
+                $('#submitbutton').click(function () {
+                    var rantId = this.dataset.rantid;
+
+                    var responseContent = $('.newResponse').val();
+                    var responseStyle =
+                        `<div class="responses">
+                        <b>Response to the Stupidity:</b>
+                        <br> 
+                        ${responseContent}
+                    </div>`
+                    if (!responseContent) {
+                        alert('YOU NEED TO ENTER A RESPONSE, DUMMY!')
+                    }
+                    else {
+                        $('.testy').append(responseStyle);
+                        $('.newResponse').val('');
+                        $('.newResponse').text(newComment);
+                        $.post("/api/response/" + rantId, {
+                            response: responseContent,
+                        });//closes out $.post
+                    }//close out else statement
+                });//closes out submit click handler
+            });//closes out response click handler
+
+    }); //closes out $.get
 
 
-    $('#user2').append('user: <i>' + createRandomUsername(moderatelyInsultingUsernames, modifiers) + '</i>');
-    $('#title2').append('Something stupid from Twitter!!!');
-    $('#imagio2').append('<img src="' + pickRandom(imageLinks) + '" style=float:right;width:100px;height:100px;margin: 0 0 10px 10px>')
-    $('#mainNewsBody2').append('I want my first daughter to be a girl ');
 
-    $('#user3').append('user: <i>' + createRandomUsername(moderatelyInsultingUsernames, modifiers) + '</i>');
-    $('#title3').append('Something stupid from LinkedIn!!!');
-    $('#imagio3').append('<img src="' + pickRandom(imageLinks) + '" style=float:right;width:100px;height:100px;margin: 0 0 10px 10px>')
-    $('#mainNewsBody3').append('I hate cheating and lying and fighting...my ex boyfriend cheated on me so since then i have to be single and i love to meet someone that is honest, open minded, caring, romantic and i love to meet someone special ok...i will love to meet someone cool and caring person trustworthy...hones t and cool person that can take care of me and i will be with him till the rest of my life and i will be caring and lovely to him if you only he can promise not to cheat on me.');
+    // $('#user').append('user: <i>' + createRandomUsername(moderatelyInsultingUsernames, modifiers) + '</i>');
+    // $('#title').append('Something stupid from facebook!');
+    // $('#imagio').append('<img src="' + pickRandom(imageLinks) + '" style=float:right;width:100px;height:100px;margin: 0 0 10px 10px>')
+    // $('#mainNewsBody').append('Kris and I often comment on the trite, cliche things people say about marriage/their spouse and how dishonoring and disrespectful they can be. When we were in New Orleans last week we overheard a conversation between a young girl and an older couple who had been married for 38 years. The girl asked the couple the common question, Whats the secret? The man responded, Go hard of hearing early. Really? Thats the best advice you have to give? You cant do any better after 38 years than some vapid quip? Call me crazy but I think how you talk about your marriage and your partner matters. Giving respect and honor is important.');
+
+
+    // $('#user2').append('user: <i>' + createRandomUsername(moderatelyInsultingUsernames, modifiers) + '</i>');
+    // $('#title2').append('Something stupid from Twitter!!!');
+    // $('#imagio2').append('<img src="' + pickRandom(imageLinks) + '" style=float:right;width:100px;height:100px;margin: 0 0 10px 10px>')
+    // $('#mainNewsBody2').append('I want my first daughter to be a girl ');
+
+    // $('#user3').append('user: <i>' + createRandomUsername(moderatelyInsultingUsernames, modifiers) + '</i>');
+    // $('#title3').append('Something stupid from LinkedIn!!!');
+    // $('#imagio3').append('<img src="' + pickRandom(imageLinks) + '" style=float:right;width:100px;height:100px;margin: 0 0 10px 10px>')
+    // $('#mainNewsBody3').append('I hate cheating and lying and fighting...my ex boyfriend cheated on me so since then i have to be single and i love to meet someone that is honest, open minded, caring, romantic and i love to meet someone special ok...i will love to meet someone cool and caring person trustworthy...hones t and cool person that can take care of me and i will be with him till the rest of my life and i will be caring and lovely to him if you only he can promise not to cheat on me.');
 
 
     $('#quote').append(pickRandomAtInterval(uninspirationalQuotes, 2, "second"));
 
     // RESPONSE BUTTON CLICK HANDLER
-    $(".responseButton").click(function () {
-        var newComment = '<div style="display: none;" class="new-link" name="link[]" ><textarea cols="40" rows="1" id="newResponse" placeholder="enter a response!"/><br><button class="submitbutton">Submit</button></div>'
+    // $(".responseButton").click(function () {
+    //     var newComment = '<div style="display: none;" class="new-link" name="link[]" ><textarea cols="40" rows="1" id="newResponse" placeholder="enter a response!"/><br><button class="submitbutton">Submit</button></div>'
 
-        $(newComment)
-            //on click append response box and submit to div
-            .appendTo($('#responseBox')).slideDown("fast");
-        //clear response button
-        $('#clearButton').text('');
-        $('.submitbutton').click(function () {
-            var responseContent = $('#newResponse').val();
-            var responseStyle = '<div class="responses"><b>Response to the Stupidity:</b><br>' + responseContent + '</div>'
-            if (!responseContent) {
-                alert('YOU NEED TO ENTER A RESPONSE, DUMMY!')
-            }
-            else {
-                $('#testy').append(responseStyle);
-                $('#newResponse').val('');
-                $('#newResponse').text(newComment);
-                $.post("/api/response/:rantID", {
-                    response: responseContent,
-                    date: Date.now()
-                });
-            }
-        });
-    });
+    //     $(newComment)
+    //         //on click append response box and submit to div
+    //         .appendTo($('#responseBox')).slideDown("fast");
+    //     //clear response button
+    //     $('#clearButton').text('');
+    //     $('.submitbutton').click(function () {
+    //         var responseContent = $('#newResponse').val();
+    //         var responseStyle = '<div class="responses"><b>Response to the Stupidity:</b><br>' + responseContent + '</div>'
+    //         if (!responseContent) {
+    //             alert('YOU NEED TO ENTER A RESPONSE, DUMMY!')
+    //         }
+    //         else {
+    //             $('#testy').append(responseStyle);
+    //             $('#newResponse').val('');
+    //             $('#newResponse').text(newComment);
+    //             $.post("/api/response/:rantID", {
+    //                 response: responseContent,
+    //                 date: Date.now()
+    //             });
+    //         }
+    //     });
+    // });
 
 
 
@@ -188,5 +242,6 @@
     //add comment box?
 
 </script>
+</body>
 
 </html>
