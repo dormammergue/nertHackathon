@@ -5,20 +5,20 @@
 
     */
 
-    function getGripesFromRant(rant) {
-            var gripes = [];
-            Object.keys(rant.listOfGripes).map(function (key) {
-                var gripe = {};
-                gripe[key] = rant.listOfGripes[key];
-                gripes.push(gripe);
-            })
-            return gripes;
-        }
+    // function getGripesFromRant(rant) {
+    //         var gripes = [];
+    //         Object.keys(rant.listOfGripes).map(function (key) {
+    //             var gripe = {};
+    //             gripe[key] = rant.listOfGripes[key];
+    //             gripes.push(gripe);
+    //         });
+    //         return gripes;
+    //     }
 
         $.get("/api/rants", function (data) {
             var rant = data[0];
 
-            console.log("Gripes", getGripesFromRant(rant));
+            //console.log("Gripes", getGripesFromRant(rant));
 
             //TODO: get reaction types and images from DB
             var imageFolderPath = "../images/reactionsImages/";

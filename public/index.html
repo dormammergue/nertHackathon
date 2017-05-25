@@ -22,10 +22,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="./styles.css">
-    <script src='./utility.js'></script>
+    <link rel="stylesheet" href="./styles/styles.css">
+    <script src='./scripts/utility.js'></script>
 <script src="./scripts/gripes-widget.js"></script>
     <link rel="stylesheet" href="./styles/gripes-widget.css" />
+    <script src="./scripts/app.js"></script>
 </head>
 
 
@@ -82,9 +83,6 @@
             </div>
         </div>
     </div>
-
-
-
     </div>
     </div>
     </div>
@@ -98,7 +96,7 @@
         $(".display-results").after(
             `<div id='${rant._id}' class='newsfeed'>
                         <span class='user'>
-                            <i>From User: ${createRandomUsername(moderatelyInsultingUsernames, modifiers)}
+                            From User: <i>${createRandomUsername(moderatelyInsultingUsernames, modifiers)}
                             </i>
                         </span>
                         <br>
@@ -114,25 +112,28 @@
                         <span class='contents'>
                             ${rant.content} 
                         </span>
-                        <div class="images">
-                            <img src='.${pickRandom(imageLinks)}' class='imagio'>
-                        </div>
                         <div class='responseDiv'>
                             <span class='clearButton'>
                                 <button class='responseButton'>
                                     Leave a response!
                                  </button>
                             </span>
+                            <div class="gripe-reaction"></div>
                             <div class='responseBox'>
                             </div>
                             
                         </div>
+                        
                         <div class='testy'>
                         </div>
                         <div class='testy2'>
                         <b><u>Comments to the Dummies!</u></b><br>
                         ${splitComments(rant.listOfResponse)}
                         </div>
+                         <div class="images">
+                            <img src='.${pickRandom(imageLinks)}' class='imagio'>
+                        </div>
+                        
                     </div>`
         ); //closes out append after~display results
     }
@@ -212,8 +213,6 @@
 
     
     $('#quote').append(pickRandomAtInterval(uninspirationalQuotes, 2, "second"));
-
-   
 
 </script>
 </body>
