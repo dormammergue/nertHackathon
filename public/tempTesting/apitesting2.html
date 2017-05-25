@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>API Testing</title>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="../styles.css">
+    <script src='../utility.js'></script>
+</head>
+
+<body>
+    <div id="display-results"></div>
+    <button id="test-get-rants">Get Rants</button>
+    <button id="test-post-rant">Post New Rant</button>
+    <button id="test-post-response">Post Response</button>
+
+
+
+
+    <script>
+        //Get all rants
+        $("#test-get-rants").click(function () {
+
+            $.get("/api/rants", function (rants) {
+                for (rant of rants) {
+                    $("#display-results").after(`<div class='newsfeed' id="${rant._id}">
+                        <span class='user'>
+                            <i>${createRandomUsername(moderatelyInsultingUsernames, modifiers)}
+                            </i>
+                        </span>
+                        <br>
+                        <span class='title'>
+                            <h4>
+                                <b>
+                                    <u>Something stupid from 
+                                    ${rant.channel}
+                                    </u>
+                                </b>
+                            </h4>
+                        </span>
+                        <span class='contents'>
+                        ${rant.content} 
+                        </span>
+                        <div >  <span id='clearButton'><button class='responseButton'>Leave a response!</button></span>
+                    <div id='responseBox'></div>
+                            <img src='.${pickRandom(imageLinks)}' class='imagio'>
+                    </div>
+                    <div id='testy'></div>
+                    </div>`);
+                }
+                 $(".responseButton").click(function () {
+            var newComment = `<div style="display: none;" class="new-link" name="link[]" ><textarea cols="40" rows="1" id="newResponse" placeholder="enter a response!"/><br><button class="submitbutton" data-rantID="${rant._id}">Submit</button></div>`
+
+            $(newComment)
+                //on click append response box and submit to div
+                .appendTo($('#responseBox')).slideDown("fast");
+            //clear response button
+            $('#clearButton').text('');
+            $('.submitbutton').click(function () {
+                var rantId = this.dataset.rantID;
+                console.log(this);
+
+                var responseContent = $('#newResponse').val();
+                var responseStyle = '<div class="responses"><b>Response to the Stupidity:</b><br>' + responseContent + '</div>'
+                if (!responseContent) {
+                    alert('YOU NEED TO ENTER A RESPONSE, DUMMY!')
+                }
+                else {
+                    $('#testy').append(responseStyle);
+                    $('#newResponse').val('');
+                    $('#newResponse').text(newComment);
+                    $.post("/api/response/" + rantId, {
+                        response: responseContent,
+                        //date: Date.now()
+                    });
+                }
+            });
+        });
+            });
+        });
+
+        //Post a rant
+        // $("#test-post-rant").click(function () {
+
+        //     var newRant = {
+        //         rant: "GitHub merge conflicts suck",
+        //         channel: "Shitter",
+        //     }
+        //     $.post("/api/newRant/", newRant, function (data) {
+        //         $("#display-result").text("Created Rant");
+        //     })
+        // })
+
+        //Get a rant
+
+        //Post a response about a rant
+        // $("#test-post-response").click(function () {
+        //     var response = "This rant is pedantic!";
+        //     var rantId = "59247b0b0008e263fcca89ff";
+        //     //ObjectId("59247a82df4d5d60383880b6")
+
+        //     $.post(`/api/response/${rantId}`, { response: response }, function (data) {
+        //         console.log(data);
+        //     })
+
+        // })
+
+
+       
+    </script>
+
+</body>
+
+</html>
