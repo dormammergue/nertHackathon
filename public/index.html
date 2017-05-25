@@ -130,14 +130,12 @@
                         </div>
                     </div>`
             ); //closes out append after~display results
-           
-        } //closes out for loop 
- $(".responseButton").click(function () {
+            $(".responseButton").click(function () {
                 var newComment =
                     `<div style="display: none;" class="new-link" name="link[]" >
-                    <textarea cols="40" rows="1" class="newResponse" placeholder="enter a response!"/>
+                    <textarea cols="40" rows="1" id="newResponse" placeholder="enter a response!"/>
                     <br>
-                    <button id="submitbutton" data-rantID="${rant._id}">
+                    <button class="submitbutton" data-rantID="${rant._id}">
                         Submit
                     </button>
                 </div>`
@@ -146,16 +144,22 @@
                     .appendTo($('.responseBox')).slideDown("fast");
                 //clear response button
                 $('.clearButton').text('');
-                $('#submitbutton').click(function () {
+                $('.submitbutton').click(function () {
                     var rantId = this.dataset.rantid;
+                    console.log(this);
+                    var responseContent = $(this).parent();
 
-                    var responseContent = $('.newResponse').val();
+
+                    //v/ar responseContent = $('#newResponse').val();
+                    console.log(responseContent);
                     var responseStyle =
                         `<div class="responses">
                         <b>Response to the Stupidity:</b>
                         <br> 
                         ${responseContent}
                     </div>`
+
+
                     if (!responseContent) {
                         alert('YOU NEED TO ENTER A RESPONSE, DUMMY!')
                     }
@@ -169,6 +173,9 @@
                     }//close out else statement
                 });//closes out submit click handler
             });//closes out response click handler
+
+        } //closes out for loop 
+
 
     }); //closes out $.get
 
