@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -7,56 +7,105 @@
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
 </head>
 <body>
-    <!--//https://coderexample.com/facebook-like-reaction-system/-->
-    <!-- Reaction system start -->
-    <div class="facebook-reaction">
-        <!-- container div for reaction system -->
-        <span class="like-btn">
-            <!-- Default like button -->
-            <span class="like-btn-emo like-btn-default"></span> <!-- Default like button emotion-->
-            <span class="like-btn-text">Gripe</span> <!-- Default like button text,(Like, wow, sad..) default:Like  -->
-            <ul class="reactions-box">
-                <!-- Reactions html is dynamically created in js and appended in here -->
-            </ul>
-        </span>
-        <div class="like-stat">
-            <!-- Like statistic container-->
-            <span class="like-emo">
-                <!-- like emotions container -->
-                <span class="like-btn-like"></span> <!-- given emotions like, wow, sad (default:Like) -->
-            </span>
-        </div>
+    <!--//https://coderexample.com/facebook-gripe-reaction-system/-->
+    <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <!-- Reaction system start -->
+        <div class="gripe-reaction"></div>
+        <!-- Reaction system end -->
     </div>
-    <!-- Reaction system end -->
+        
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <!----------------------------------------TEMP-------------------------------------------------------->
+    <!-- container div for reaction system -->
+    <span class="gripe-btn">
+        <!-- Default gripe button -->
+        <span class="gripe-btn-emo gripe-btn-default"></span> <!-- Default gripe button emotion-->
+        <span class="gripe-btn-text">Gripe</span> <!-- Default gripe button text,(gripe, wow, sad..) default:gripe  -->
+        <ul class="reactions-box">
+            <!-- Reactions html is dynamically created in js and appended in here -->
+        </ul>
+    </span>
+
+
+    <!--<div class="gripe-stat">-->
+        <!-- gripe statistic container-->
+        <!--<span class="gripe-emo">-->
+            <!-- gripe emotions container -->
+            <!--<span class="gripe-btn-gripe"></span>--> <!-- given emotions gripe, wow, sad (default:gripe) -->
+        <!--</span>-->
+    <!--</div>-->
+    <!----------------------------------------END TEMP-------------------------------------------------------->
+    
+    
     <script>
+        /*TODO List
+            1) Hook up with DB to display number
+            2)
+
+        */
+
         //TODO: get reaction types and images from DB
         var imageFolderPath = "../images/reactionsImages/";
+        //make sure class name and display name are different (not just case) or one will overwrite the other class
         var reactions = [
             {
-                className: "angry",
+                className: "-angry",
                 displayName: "Angry",
                 imagePath: imageFolderPath + "angry.gif",
                 color:"red"
             },
             {
-                className: "annoyed",
+                className: "-annoyed",
                 displayName: "Annoyed",
                 imagePath: imageFolderPath + "annoyed.gif",
                 color: "pink"
             },
             {
-                className: "self-righteous-prick",
+                className: "-self-righteous-prick",
                 displayName: "Self Righteous Prick",
                 imagePath: imageFolderPath + "self-righteous.jpg",
                 color: "blue"
             },
             {
-                className: "depressed",
+                className: "-depressed",
                 displayName: "Depressed",
                 imagePath: imageFolderPath + "depressed.gif",
                 color: "green"
             }
         ]
+
+        
+        function createBaseHtml() {
+            //start with a div with the class gripe-reaction and generate html in that
+            var baseHtml = `
+                            <!-- container div for reaction system -->
+                            <span class="gripe-btn">
+                                <!-- Default gripe button -->
+                                <span class="gripe-btn-emo gripe-btn-default"></span> <!-- Default gripe button emotion-->
+                                <span class="gripe-btn-text">Gripe</span> <!-- Default gripe button text,(gripe, wow, sad..) default:gripe  -->
+                                <ul class="reactions-box">
+                                    <!-- Reactions html is dynamically created in js and appended in here -->
+                                </ul>
+                            </span>
+                           `;
+            $(".gripe-reaction").append(baseHtml);
+        }
 
         function createReactionsListHtml(reactions) {
             //dynamically creates the html for the different types of reactions
@@ -65,7 +114,7 @@
             //loop through each reaction and create a tag for it
             for (reaction of reactions) {
                 createReactionsCss(reaction)
-                var reactionHtml = `<li class="reaction reaction-${reaction.className}" data-reaction="${reaction.className}"></li>`
+                var reactionHtml = `<li class="reaction reaction-${reaction.className}" data-emotion = "${reaction.className}" data-reaction="${reaction.displayName}"></li>`
                 reactionsHtml += reactionHtml;
             }
             $(".reactions-box").append(reactionsHtml);
@@ -81,22 +130,24 @@
                         transition-delay: .25s;
                         background-image: url('${reaction.imagePath}');
                         background-color: ${reaction.color};
+                        border: 2px red solid;
                     }
                     .reaction-${reaction.className}::before {
                         content: '${reaction.displayName}'
                     }
-                    .like-btn:hover .reaction-${reaction.className} {
+                    .gripe-btn:hover .reaction-${reaction.className} {
                         animation-delay: .2s
                     }
 
-                    .like-btn-${reaction.className} {
+                    .gripe-btn-${reaction.className} {
                         background-image: url('${reaction.imagePath}');
                         background-repeat: no-repeat;
                         background-size: auto;
-                        background-position: -17px -117px;
+                        background-color:red;
+                        border: 5px red solid;
                     }
 
-                    .like-btn-text-${reaction.className} {
+                    .gripe-btn-text-${reaction.className} {
                         color: rgb(247, 113, 75);
                     }
             `).appendTo("head");
@@ -105,27 +156,29 @@
 
         $(document).ready(function () {
 
+            createBaseHtml();
             createReactionsListHtml(reactions);
 
 
-            $(".reaction").on("click", function () {   // like click
+            $(".reaction").on("click", function () {   // gripe click
                 var data_reaction = $(this).attr("data-reaction");
-                //$(".like-details").html("You, Arkaprava Majumder and 1k others");
-                $(".like-btn-emo").removeClass().addClass('like-btn-emo').addClass('like-btn-' + data_reaction.toLowerCase());
-                $(".like-btn-text").text(data_reaction).removeClass().addClass('like-btn-text').addClass('like-btn-text-' + data_reaction.toLowerCase()).addClass("active");;
+                var data_emotion = $(this).attr("data-emotion");
+                //$(".gripe-details").html("You, Arkaprava Majumder and 1k others");
+                $(".gripe-btn-emo").removeClass().addClass('gripe-btn-emo').addClass('gripe-btn-' + data_emotion.toLowerCase());
+                $(".gripe-btn-text").text(data_reaction).removeClass().addClass('gripe-btn-text').addClass('gripe-btn-text-' + data_reaction.toLowerCase()).addClass("active");;
 
-                if (data_reaction == "Like")
-                    $(".like-emo").html('<span class="like-btn-like"></span>');
+                if (data_reaction == "gripe")
+                    $(".gripe-emo").html('<span class="gripe-btn-gripe"></span>');
                 else
-                    $(".like-emo").html('<span class="like-btn-like"></span><span class="like-btn-' + data_reaction.toLowerCase() + '"></span>');
+                    $(".gripe-emo").html('<span class="gripe-btn-gripe"></span><span class="gripe-btn-' + data_reaction.toLowerCase() + '"></span>');
             });
 
-            $(".like-btn-text").on("click", function () { // undo like click
+            $(".gripe-btn-text").on("click", function () { // undo gripe click
                 if ($(this).hasClass("active")) {
-                    $(".like-btn-text").text("Bitch").removeClass().addClass('like-btn-text');
-                    $(".like-btn-emo").removeClass().addClass('like-btn-emo').addClass("like-btn-default");
-                    $(".like-emo").html('<span class="like-btn-like"></span>');
-                    $(".like-details").html("Arkaprava Majumder and 1k others");
+                    $(".gripe-btn-text").text("Gripe").removeClass().addClass('gripe-btn-text');
+                    $(".gripe-btn-emo").removeClass().addClass('gripe-btn-emo').addClass("gripe-btn-default");
+                    $(".gripe-emo").html('<span class="gripe-btn-gripe"></span>');
+                    $(".gripe-details").html("Arkaprava Majumder and 1k others");
                 }
             })
         });
@@ -139,7 +192,7 @@
             position: relative;
         }
 
-        .like-btn {
+        .gripe-btn {
             font-weight: bold;
             color: #7f7f7f;
             position: relative;
@@ -147,22 +200,39 @@
             padding: 20px 20px 0 0;
         }
 
-        .like-btn:hover {
-                text-decoration: underline;
+            .gripe-btn:hover {
+                /*text-decoration: underline;*/
             }
 
-        .like-btn-default {
+        .gripe-btn-gripe {
+            background-image: url('../images/reactionsImages/angry.gif');
+            background-color:deeppink;
+            width: 50px;
+            height: 50px;
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: -17px -151px;
+        }
+
+        
+
+
+
+        .gripe-btn-default {
             background-image: url('../images/reactionsImages/angry.gif');
             background-repeat: no-repeat;
             background-size: auto;
             background-position: -277px -446px;
         }
 
-        .like-btn-emo {
+        .gripe-btn-emo {
             display: inline-block;
             margin: 0 6px -3px 0;
-            width: 16px;
-            height: 16px;
+            width: 50px;
+            height: 50px;
+            border-radius:50%;
+            background-color:blue;
+
         }
 
         .reactions-box {
@@ -170,10 +240,12 @@
             width: 340px;
             padding: 10px;
             position: absolute;
-            top: -63px;
-            left: -14px;
-            box-shadow: 1px 1px 2px #cccccc, -1px 0px 2px #eeeeee;
+            top: -90px;
+            left: 15px;
+            border: 1px red solid;
+            box-shadow: 1px 1px 2px #ef0000, -5px 5px 5px #a34848;
             border-radius: 44px 44px;
+            background-color: pink;
             display: none;
         }
 
@@ -193,11 +265,11 @@
             background-position: center center
         }
 
-        .like-btn:hover .reactions-box {
+        .gripe-btn:hover .reactions-box {
             display: block;
         }
 
-        .like-btn:hover .reaction {
+        .gripe-btn:hover .reaction {
             opacity: 1;
             animation-name: reaction_delay;
             animation-duration: .5s;
@@ -223,14 +295,6 @@
                 height: 48px;
                 top: 8px;
             }
-        }
-
-        .like-btn:hover .reaction-annoyed {
-            animation-delay: .2s
-        }
-
-        .like-btn:hover .reaction-angry {
-            animation-delay: .25s
         }
 
         .reaction:hover {
@@ -260,17 +324,32 @@
             opacity: 1
         }
 
-        .like-stat {
+        .gripe-stat {
             margin-top: 10px;
         }
 
-        .like-emo > span {
+        .gripe-emo > span {
+            /*background-image: url('../images/reactionsImages/angry.gif');*/
             display: inline-block;
             margin: 0 -3px -3px 0px;
-            width: 16px;
-            height: 16px;
+            width: 50px;
+            height: 50px;
             border: 1px solid #EEE;
             border-radius: 50%;
+        }
+
+        .gripe-details {
+            margin-left: 10px;
+            color: #9197a3;
+            font-size: 12px;
+        }
+
+        .gripe-btn-text{
+            position:absolute;
+            bottom:12px;
+            color:red;
+            font-size:1.5em;
+          
         }
     </style>
 </body>

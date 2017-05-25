@@ -93,9 +93,9 @@
 <script>
     //Get all rants
 
-    function buildAndDisplayRant(rant){
-        $(".display-results").after(
-                `<div id='${rant._id}' class='newsfeed'>
+    $.get("/api/rants", function (rants) {
+        for (rant of rants) {
+            $(".display-results").after(`<div class='newsfeed'>
                         <span class='user'>
                             <i>${createRandomUsername(moderatelyInsultingUsernames, modifiers)}
                             </i>
@@ -130,63 +130,49 @@
                         </div>
                     </div>`
             ); //closes out append after~display results
-    }
-
-    function buildComment(rant){
-        console.log("RANT ID", rant._id);
-        var newComment =
-                `<div style="display: none;" class="new-link" name="link[]" >
-                    <textarea cols="40" rows="1"class="newResponse" placeholder="enter a response!"/>
+            $(".responseButton").click(function () {
+                var newComment =
+                    `<div style="display: none;" class="new-link" name="link[]" >
+                    <textarea cols="40" rows="1" id="newResponse" placeholder="enter a response!"/>
                     <br>
                     <button class="submitbutton" data-rantID="${rant._id}">
                         Submit
                     </button>
                 </div>`
-        return newComment;
-    }
+                //append new comment to response box 
+                $(newComment)
+                    .appendTo($('.responseBox')).slideDown("fast");
+                //clear response button
+                $('.clearButton').text('');
+                $('.submitbutton').click(function () {
+                    var rantId = this.dataset.rantid;
+                    console.log(this);
+                    var responseContent = $(this).parent();
 
 
-    function buildClickHandler(){
-        var newComment = buildComment(rant);
-        //append new comment to response box  
+                    //v/ar responseContent = $('#newResponse').val();
+                    console.log(responseContent);
+                    var responseStyle =
+                        `<div class="responses">
+                        <b>Response to the Stupidity:</b>
+                        <br> 
+                        ${responseContent}
+                    </div>`
 
-        var rantId = rant._id;
-        //find response box for rant
-       
-        $(newComment).appendTo($(`#${rantId}`).find(".responseBox")).slideDown("fast");
 
-        //clear response button
-        $('.clearButton').text('');
-        $(`#${rantId}`).find('.submitbutton').click(function () {
-            var rantId = this.dataset.rantid;
-            var responseContent = $(`#${rantId}`).find('.newResponse').val();
-            var responseStyle =
-                `<div class="responses">
-                    <b>Response to the Stupidity:</b>
-                    <br> 
-                    ${responseContent}
-                </div>`
-            if (!responseContent) {
-                alert('YOU NEED TO ENTER A RESPONSE, DUMMY!')
-            }
-            else {
-                $(`#${rantId}`).find('.testy').append(responseStyle);
-                $(`#${rantId}`).find('.newResponse').val('');
-                $(`#${rantId}`).find('.newResponse').text(newComment);
-                $.post("/api/response/" + rantId, {
-                    response: responseContent,
-                });//closes out $.post
-            }//close out else statement
-        });//closes out submit click handler
-    }
-
-    $.get("/api/rants", function (rants) {
-        for (rant of rants) {
-            console.log("BUILDING RANT");
-            buildAndDisplayRant(rant);
-            //create unique container
-            //grab general class withing unique container with .find()
-            $(".responseButton").click(buildClickHandler());//closes out response click handler
+                    if (!responseContent) {
+                        alert('YOU NEED TO ENTER A RESPONSE, DUMMY!')
+                    }
+                    else {
+                        $('.testy').append(responseStyle);
+                        $('.newResponse').val('');
+                        $('.newResponse').text(newComment);
+                        $.post("/api/response/" + rantId, {
+                            response: responseContent,
+                        });//closes out $.post
+                    }//close out else statement
+                });//closes out submit click handler
+            });//closes out response click handler
 
         } //closes out for loop 
 

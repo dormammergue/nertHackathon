@@ -44,12 +44,14 @@
                 $("#display-result").text("Created Rant");
             })
         })
+
         //Post a response about a rant
         //WORKING
         $("#test-post-response").click(function () {
             var response = "This rant is pedantic!";
             var rantId = "5925c5d225a9f146c1b84b05";
             //ObjectId("59247a82df4d5d60383880b6")
+
             $.post(`/api/response/${rantId}`, { response: response }, function (data) {
                 console.log(data);
             })
@@ -62,6 +64,25 @@
                 console.log(data);
             })
         })
+
+
+            $.post(`/api/response/${rantId}`, { response: response }, function (data) {
+                console.log(data);
+            })
+
+        });
+
+        //Create a reaction for a response
+        $('#test-post-gripe').click(function () {
+
+            var rantId = "5925c5d225a9f146c1b84b05";
+            var gripeType = "angryAnt"
+
+            $.post(`/api/updateGripe/${rantId}`, {gripeType: gripeType }, function (data) {
+                console.log(data);
+            })
+        })
+
     </script>
     
 </body>
