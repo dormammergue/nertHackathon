@@ -1,0 +1,159 @@
+.facebook-reaction {
+    max-width: 100%;
+    margin: 150px auto;
+    padding: 0 60px;
+    position: relative;
+}
+
+.gripe-btn {
+    font-weight: bold;
+    color: #7f7f7f;
+    position: relative;
+    cursor: pointer;
+    padding: 20px 20px 0 0;
+}
+
+    .gripe-btn:hover {
+        /*text-decoration: underline;*/
+    }
+
+.gripe-btn-gripe {
+    background-image: url('../images/reactionsImages/angry.gif');
+    background-color: deeppink;
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: -17px -151px;
+}
+
+.gripe-btn-default {
+    background-image: url('../images/reactionsImages/angry.gif');
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: -277px -446px;
+}
+
+.gripe-btn-emo {
+    display: inline-block;
+    margin: 0 6px -3px 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: blue;
+}
+
+.reactions-box {
+    height: 44px;
+    width: 340px;
+    padding: 10px;
+    position: absolute;
+    top: -90px;
+    left: 15px;
+    border: 1px red solid;
+    box-shadow: 1px 1px 2px #ef0000, -5px 5px 5px #a34848;
+    border-radius: 44px 44px;
+    background-color: pink;
+    display: none;
+}
+
+.reaction {
+    list-style-type: none;
+    cursor: pointer;
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    //position: absolute;
+    top: 8px;
+    opacity: 0;
+    transform: scale(1, 1);
+    transition: opacity .5s ease-in-out 1s, transform .07s ease-in-out 0s, top .07s ease-in-out 0s;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center
+}
+
+.gripe-btn:hover .reactions-box {
+    display: block;
+}
+
+.gripe-btn:hover .reaction {
+    opacity: 1;
+    animation-name: reaction_delay;
+    animation-duration: .5s;
+    border-radius: 25px;
+    margin: 5px;
+}
+
+@keyframes reaction_delay {
+    0% {
+        width: 48px;
+        height: 48px;
+        top: 60px;
+    }
+
+    48% {
+        width: 56px;
+        height: 56px;
+        top: 5px;
+    }
+
+    100% {
+        width: 48px;
+        height: 48px;
+        top: 8px;
+    }
+}
+
+.reaction:hover {
+    transform: scale(1.3, 1.3);
+    top: 2px
+}
+
+.reaction::before {
+    display: inline-block;
+    color: #ffffff;
+    text-align: center;
+    line-height: 17px;
+    font-size: .7em;
+    width: 100%;
+    /*height: 17px;*/
+    margin-left: 10%;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    position: absolute;
+    top: -25px;
+    opacity: 0;
+    transition: opacity .2s ease-in-out 0s;
+}
+
+.reaction:hover::before {
+    opacity: 1
+}
+
+.gripe-stat {
+    margin-top: 10px;
+}
+
+.gripe-emo > span {
+    /*background-image: url('../images/reactionsImages/angry.gif');*/
+    display: inline-block;
+    margin: 0 -3px -3px 0px;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #EEE;
+    border-radius: 50%;
+}
+
+.gripe-details {
+    margin-left: 10px;
+    color: #9197a3;
+    font-size: 12px;
+}
+
+.gripe-btn-text {
+    position: absolute;
+    bottom: 12px;
+    color: red;
+    font-size: 1.5em;
+}
