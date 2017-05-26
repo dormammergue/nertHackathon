@@ -130,11 +130,4 @@ h1.newHeader{
     color: #9197E2;
 }
 
-
-
-/*Let's try making a cursor mmmkay?*/
-/* Start http://www.cursors-4u.com */ 
-body, a:hover {
-    cursor: url(http://cur.cursors-4u.net/food/foo-3/foo247.ani), url(http://cur.cursors-4u.net/food/foo-3/foo247.png), progress !important;} /* End http://www.cursors-4u.com */
-
-
+/* Start http://www.cursors-4u.com */ body, a:hover {cursor: url(http://cur.cursors-4u.net/others/oth-7/oth666.cur), progress !important;} /* End http://www.cursors-4u.com */

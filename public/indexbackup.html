@@ -22,13 +22,17 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="./styles.css">
-    <script src='./utility.js'></script>
+    <link rel="stylesheet" href="./styles/styles.css">
+    <script src='./scripts/utility.js'></script>
+<script src="./scripts/gripes-widget.js"></script>
+    <link rel="stylesheet" href="./styles/gripes-widget.css" />
+    <script src="./scripts/app.js"></script>
 
 </head>
 
 
 <body>
+    
     <jumbotron><img src='./images/NERTtemp.png' width='100%'></jumbotron>
 
 
@@ -43,7 +47,7 @@
                 <div class="left-navigation">
                     <ul class="list">
                         <br><br>
-                        <h5><strong>Stupid Social Network Channels</strong></h5>
+                        <h5><strong>FEATURED Stupid Social Network Channels</strong></h5>
                         <li><span id='facebook'>Wastebook</span></li>
                         <li>Shitter</li>
                         <li>StinkedIn</li>
@@ -81,9 +85,6 @@
             </div>
         </div>
     </div>
-
-
-
     </div>
     </div>
     </div>
@@ -93,11 +94,11 @@
 <script>
     //Get all rants
 
-    $.get("/api/rants", function (rants) {
-        for (rant of rants) {
-            $(".display-results").after(`<div class='newsfeed'>
+    function buildAndDisplayRant(rant) {
+        $(".display-results").after(
+            `<div id='${rant._id}' class='newsfeed, ${rant.channel}'>
                         <span class='user'>
-                            <i>${createRandomUsername(moderatelyInsultingUsernames, modifiers)}
+                            From User: <i>${createRandomUsername(moderatelyInsultingUsernames, modifiers)}
                             </i>
                         </span>
                         <br>
@@ -113,145 +114,103 @@
                         <span class='contents'>
                             ${rant.content} 
                         </span>
-                        <div class="images">
-                            <img src='.${pickRandom(imageLinks)}' class='imagio'>
-                        </div>
                         <div class='responseDiv'>
                             <span class='clearButton'>
                                 <button class='responseButton'>
                                     Leave a response!
                                  </button>
                             </span>
+                            <div class="gripe-reaction"></div>
                             <div class='responseBox'>
                             </div>
                             
                         </div>
+                        
                         <div class='testy'>
                         </div>
                         <div class='testy2'>
-                        
+                        <b><u>Comments to the Dummies!</u></b><br>
+                        ${splitComments(rant.listOfResponse)}
                         </div>
+                         <div class="images">
+                            <img src='.${pickRandom(imageLinks)}' class='imagio'>
+                        </div>
+                        
                     </div>`
-            ); 
-            //closes out append after~display results
-            $(".responseButton").click(function () {
-                var newComment =
-                    `<div style="display: none;" class="new-link" name="link[]" >
-                    <textarea cols="40" rows="1" id="newResponse" placeholder="enter a response!"/>
+        ); //closes out append after~display results
+    }
+
+ 
+    function splitComments(arr) {
+        var responseListHtml = ""
+        for (var i = arr.length-1; i > 1; i--) {
+            responseListHtml += (arr[i] + '<hr />')
+        }
+        return responseListHtml;
+    }
+
+    function buildComment(rant) {
+        console.log("RANT ID", rant._id);
+        var newComment =
+            `<div style="display: none;" class="new-link" name="link[]" >
+                    <textarea cols="40" rows="1"class="newResponse" placeholder="enter a response!"/>
                     <br>
                     <button class="submitbutton" data-rantID="${rant._id}">
                         Submit
                     </button>
                 </div>`
-
-                //append new comment to response box 
-                $(newComment)
-                    .appendTo($('.responseBox')).slideDown("fast");
-                //clear response button
-                $('.clearButton').text('');
-                $('.submitbutton').click(function () {
-                    var rantId = this.dataset.rantid;
-                    console.log(this);
-                    var responseContent = $(this).parent();
+        return newComment;
+    }
 
 
-                    //v/ar responseContent = $('#newResponse').val();
-                    console.log(responseContent);
-                    var responseStyle =
-                        `<div class="responses">
-                        <b>Response to the Stupidity:</b>
-                        <br> 
-                        ${responseContent}
-                    </div>`
+    function buildClickHandler() {
+        var newComment = buildComment(rant);
+        //append new comment to response box  
 
+        var rantId = rant._id;
+        //find response box for rant
 
-                    if (!responseContent) {
-                        alert('YOU NEED TO ENTER A RESPONSE, DUMMY!')
-                    }
-                    else {
-                        $('.testy').append(responseStyle);
-                        $('.newResponse').val('');
-                        $('.newResponse').text(newComment);
-                        $.post("/api/response/" + rantId, {
-                            response: responseContent,
-                        });//closes out $.post
-                    }//close out else statement
-                });//closes out submit click handler
-            });//closes out response click handler
+        $(newComment).appendTo($(`#${rantId}`).find(".responseBox")).slideDown("fast");
+
+        //clear response button
+        $('.clearButton').text('');
+        $(`#${rantId}`).find('.submitbutton').click(function () {
+            var rantId = this.dataset.rantid;
+            var responseContent = $(`#${rantId}`).find('.newResponse').val();
+            var responseStyle =
+                `<div class="responses">
+                    <b>Response to the Stupidity:</b>
+                    <br> 
+                    ${responseContent}
+                </div>`
+
+            if (!responseContent) {
+                alert('YOU NEED TO ENTER A RESPONSE, DUMMY!')
+            }
+            else {
+                $(`#${rantId}`).find('.testy').append(responseStyle);
+                $(`#${rantId}`).find('.newResponse').val('');
+                $(`#${rantId}`).find('.newResponse').text(newComment);
+                $.post("/api/response/" + rantId, {
+                    response: responseContent,
+                });//closes out $.post
+            }//close out else statement
+        });//closes out submit click handler
+    }
+
+    $.get("/api/rants", function (rants) {
+        for (rant of rants) {
+            buildAndDisplayRant(rant);
+            //create unique container
+            //grab general class withing unique container with .find()
+            $(".responseButton").click(buildClickHandler());//closes out response click handler
 
         } //closes out for loop 
 
 
     }); //closes out $.get
 
-
-
-    // $('#user').append('user: <i>' + createRandomUsername(moderatelyInsultingUsernames, modifiers) + '</i>');
-    // $('#title').append('Something stupid from facebook!');
-    // $('#imagio').append('<img src="' + pickRandom(imageLinks) + '" style=float:right;width:100px;height:100px;margin: 0 0 10px 10px>')
-    // $('#mainNewsBody').append('Kris and I often comment on the trite, cliche things people say about marriage/their spouse and how dishonoring and disrespectful they can be. When we were in New Orleans last week we overheard a conversation between a young girl and an older couple who had been married for 38 years. The girl asked the couple the common question, Whats the secret? The man responded, Go hard of hearing early. Really? Thats the best advice you have to give? You cant do any better after 38 years than some vapid quip? Call me crazy but I think how you talk about your marriage and your partner matters. Giving respect and honor is important.');
-
-
-    // $('#user2').append('user: <i>' + createRandomUsername(moderatelyInsultingUsernames, modifiers) + '</i>');
-    // $('#title2').append('Something stupid from Twitter!!!');
-    // $('#imagio2').append('<img src="' + pickRandom(imageLinks) + '" style=float:right;width:100px;height:100px;margin: 0 0 10px 10px>')
-    // $('#mainNewsBody2').append('I want my first daughter to be a girl ');
-
-    // $('#user3').append('user: <i>' + createRandomUsername(moderatelyInsultingUsernames, modifiers) + '</i>');
-    // $('#title3').append('Something stupid from LinkedIn!!!');
-    // $('#imagio3').append('<img src="' + pickRandom(imageLinks) + '" style=float:right;width:100px;height:100px;margin: 0 0 10px 10px>')
-    // $('#mainNewsBody3').append('I hate cheating and lying and fighting...my ex boyfriend cheated on me so since then i have to be single and i love to meet someone that is honest, open minded, caring, romantic and i love to meet someone special ok...i will love to meet someone cool and caring person trustworthy...hones t and cool person that can take care of me and i will be with him till the rest of my life and i will be caring and lovely to him if you only he can promise not to cheat on me.');
-
-
     $('#quote').append(pickRandomAtInterval(uninspirationalQuotes, 2, "second"));
-
-    // RESPONSE BUTTON CLICK HANDLER
-    // $(".responseButton").click(function () {
-    //     var newComment = '<div style="display: none;" class="new-link" name="link[]" ><textarea cols="40" rows="1" id="newResponse" placeholder="enter a response!"/><br><button class="submitbutton">Submit</button></div>'
-
-    //     $(newComment)
-    //         //on click append response box and submit to div
-    //         .appendTo($('#responseBox')).slideDown("fast");
-    //     //clear response button
-    //     $('#clearButton').text('');
-    //     $('.submitbutton').click(function () {
-    //         var responseContent = $('#newResponse').val();
-    //         var responseStyle = '<div class="responses"><b>Response to the Stupidity:</b><br>' + responseContent + '</div>'
-    //         if (!responseContent) {
-    //             alert('YOU NEED TO ENTER A RESPONSE, DUMMY!')
-    //         }
-    //         else {
-    //             $('#testy').append(responseStyle);
-    //             $('#newResponse').val('');
-    //             $('#newResponse').text(newComment);
-    //             $.post("/api/response/:rantID", {
-    //                 response: responseContent,
-    //                 date: Date.now()
-    //             });
-    //         }
-    //     });
-    // });
-
-
-
-
-//add click listener to 'submitbutton' that sends response to db 
-///eventually we will do a for loop and append this document for every article thing in the database
-
-//               <div id='newsfeed'>
-//                     <span id='user'></span><h3><b><u><span id='title'></span></b></u></h3>
-//                     <span id='mainNewsBody'></span>
-//                 </div>
-
-
-//    for each collection in database, 
-    //append to main-content:
-    // <div id = db.collection._id>
-    // <span id='user'> 'user: <i>' + createRandomUsername(moderatelyInsultingUsernames, modifiers) + '</i>');</span>
-    //<span id='title'> db.collection.title[i] </span>
-    //<span id="imagio">pickRandom(imageLinks)</span>
-    // <span id='mainNewsBody'> db.collection.body[i] </span>
-    //add comment box?
 
 </script>
 </body>
