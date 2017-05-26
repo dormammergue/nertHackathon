@@ -9,6 +9,21 @@
 
 */
 
+
+//function makeGripeObject(gripe) {
+//    return {
+//        className: gripeData.
+//    }
+//}
+//function getGripeKey(gripe) {
+//    return Object.keys(gripe)[0];
+//}
+
+
+// making gripes unique
+    //assign an I st
+
+
 function getGripesFromRant(rant) {
     var gripes = [];
 
@@ -22,16 +37,6 @@ function getGripesFromRant(rant) {
     });
     return gripes;
 }
-
-
-//function makeGripeObject(gripe) {
-//    return {
-//        className: gripeData.
-//    }
-//}
-//function getGripeKey(gripe) {
-//    return Object.keys(gripe)[0];
-//}
 
 function macthGripesWithReactions(reactions, gripes) {
     //loop through each reaction and see if it matches a gripe
@@ -51,103 +56,51 @@ function macthGripesWithReactions(reactions, gripes) {
     }
 }
 
-function getAndDisplayTotalGripes(gripes) {
+function getAndDisplayTotalGripes(gripes,rantId) {
     var totalGripesCount = 0;
     for (gripe of gripes) {
         totalGripesCount += gripe.count;
     }
-    $(".overall-gripe-count").text(totalGripesCount);
+    $(`#${rantId}`).find(".overall-gripe-count").text(totalGripesCount);
     return totalGripesCount;
 }
 
 
-$.get("/api/rants", function (data) {
-    var rant = data[0];
 
-    console.log("Gripes", getGripesFromRant(rant));
-    var gripes = getGripesFromRant(rant)
-    //console.log(Object.keys(gripes[0])[0]);
-    getAndDisplayTotalGripes(gripes);
+function createReactionsListHtml(reactions,rantId) {
+    //dynamically creates the html for the different types of reactions
+    var reactionsHtml = "";
 
-    $('.overall-gripe-count').text(gripes[0].gripeNumber);
+    //loop through each reaction and create a tag for it
+    for (reaction of reactions) {
+        createReactionsCss(reaction)
+        var reactionHtml = `<li class="reaction reaction-${reaction.className}" data-emotion="${reaction.className}" data-reaction="${reaction.displayName}">${reaction.count}</li>`
+        reactionsHtml += reactionHtml;
+    }
+    $(`#${rantId}`).find(".reactions-box").append(reactionsHtml);
+}
 
+function createBaseHtml(rantId) {
 
-
-
-
-    //TODO: get reaction types and images from DB
-    var imageFolderPath = "../images/reactionsImages/";
-    //make sure class name and display name are different (not just case) or one will overwrite the other class
-    var reactions = [
-        {
-            className: "angry",
-            displayName: "Angry",
-            imagePath: imageFolderPath + "angry.gif",
-            color: "red",
-            count:0
-        },
-        {
-            className: "annoyed",
-            displayName: "Annoyed",
-            imagePath: imageFolderPath + "annoyed.gif",
-            color: "pink",
-            count:0
-        },
-        {
-            className: "self-righteous-prick",
-            displayName: "Self Righteous Prick",
-            imagePath: imageFolderPath + "self-righteous.jpg",
-            color: "blue",
-            count: 0
-        },
-        {
-            className: "depressed",
-            displayName: "Depressed",
-            imagePath: imageFolderPath + "depressed.gif",
-            color: "green",
-            count: 0
-        }
-    ]
-
-
-    macthGripesWithReactions(reactions, gripes);
-    console.log(reactions);
-
-
-    function createBaseHtml() {
-        //start with a div with the class gripe-reaction and generate html in that
-        var baseHtml = `
-                                <!-- container div for reaction system -->
-                                <span class="gripe-btn">
-        <!-- Default gripe button -->
-                                    <span class="gripe-btn-emo gripe-btn-default"></span> <!-- Default gripe button emotion-->
-                                    <span class="gripe-btn-text">Gripe</span> <!-- Default gripe button text,(gripe, wow, sad..) default:gripe  -->
-                                    <ul class="reactions-box">
-            <!-- Reactions html is dynamically created in js and appended in here -->
-                                    </ul>
-    </span>
+    //start with a div with the class gripe-reaction and generate html in that
+    var baseHtml = `
+        <span class="gripe-btn">
+            <!-- Default gripe button -->
+            <span class="gripe-btn-emo gripe-btn-default"></span> <!-- Default gripe button emotion-->
+            <span class="overall-gripe-count">0</span><span class="gripe-btn-text">Gripe</span> <!-- Default gripe button text,(gripe, wow, sad..) default:gripe  -->
+            <ul class="reactions-box">
+                <!-- Reactions html is dynamically created in js and appended in here -->
+            </ul>
+        </span>
     `;
-        $(".gripe-reaction").append(baseHtml);
-    }
+    $(`#${rantId}`).find(".gripe-reaction").append(baseHtml);
+}
 
-    function createReactionsListHtml(reactions) {
-        //dynamically creates the html for the different types of reactions
-        var reactionsHtml = "";
+function createReactionsCss(reaction) {
 
-        //loop through each reaction and create a tag for it
-        for (reaction of reactions) {
-            createReactionsCss(reaction)
-            var reactionHtml = `<li class="reaction reaction-${reaction.className}" data-emotion="${reaction.className}" data-reaction="${reaction.displayName}">${reaction.count}</li>`
-            reactionsHtml += reactionHtml;
-        }
-        $(".reactions-box").append(reactionsHtml);
-    }
-
-    function createReactionsCss(reaction) {
-
-        $("<style>")
-            .prop("type", "text/css")
-            .html(`
+    $("<style>")
+        .prop("type", "text/css")
+        .html(`
                         .reaction-${reaction.className} {
                             left: 300px;
                             transition-delay: .25s;
@@ -183,15 +136,58 @@ $.get("/api/rants", function (data) {
                             color: rgb(247, 113, 75);
                         }
                 `).appendTo("head");
-    }
+}
 
 
+
+function buildGripe(rant) {
     $(document).ready(function () {
+        //console.log("GOT YOUR RANT", rant)
+        //console.log("Gripes", getGripesFromRant(rant));
 
-        createBaseHtml();
-        console.log("A");
-        createReactionsListHtml(reactions);
-        console.log("B");
+        var rantId = rant._id;
+        //PARSING DATA
+        var gripes = getGripesFromRant(rant)
+
+        var imageFolderPath = "../images/reactionsImages/";
+        //make sure class name and display name are different (not just case) or one will overwrite the other class
+        var reactions = [
+            {
+                className: "angry",
+                displayName: "Angry",
+                imagePath: imageFolderPath + "angry.gif",
+                color: "red",
+                count: 0
+            },
+            {
+                className: "annoyed",
+                displayName: "Annoyed",
+                imagePath: imageFolderPath + "annoyed.gif",
+                color: "pink",
+                count: 0
+            },
+            {
+                className: "self-righteous-prick",
+                displayName: "Self Righteous Prick",
+                imagePath: imageFolderPath + "self-righteous.jpg",
+                color: "blue",
+                count: 0
+            },
+            {
+                className: "depressed",
+                displayName: "Depressed",
+                imagePath: imageFolderPath + "depressed.gif",
+                color: "green",
+                count: 0
+            }
+        ]
+
+        macthGripesWithReactions(reactions, gripes);
+
+        //CREATING HTML
+        createBaseHtml(rantId);
+        createReactionsListHtml(reactions,rantId);
+        getAndDisplayTotalGripes(gripes,rantId);
 
         $(".reaction").on("click", function () {   // gripe click
             var data_reaction = $(this).attr("data-reaction");
@@ -214,5 +210,7 @@ $.get("/api/rants", function (data) {
                 $(".gripe-details").html("Arkaprava Majumder and 1k others");
             }
         })
-    });
-});
+    })
+
+ 
+}

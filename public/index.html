@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -93,6 +93,9 @@
     //Get all rants
 
     function buildAndDisplayRant(rant) {
+
+        buildGripe(rant);
+
         $(".display-results").after(
             `<div id='${rant._id}' class='newsfeed'>
                         <span class='user'>
@@ -138,7 +141,6 @@
         ); //closes out append after~display results
     }
 
- 
     function splitComments(arr) {
         var responseListHtml = ""
         for (var i = arr.length-1; i > 1; i--) {
@@ -148,7 +150,7 @@
     }
 
     function buildComment(rant) {
-        console.log("RANT ID", rant._id);
+       // console.log("RANT ID", rant._id);
         var newComment =
             `<div style="display: none;" class="new-link" name="link[]" >
                     <textarea cols="40" rows="1"class="newResponse" placeholder="enter a response!"/>
@@ -198,7 +200,7 @@
 
     $.get("/api/rants", function (rants) {
         for (rant of rants) {
-            console.log("BUILDING RANT");
+            //console.log("BUILDING RANT");
             buildAndDisplayRant(rant);
             //create unique container
             //grab general class withing unique container with .find()
