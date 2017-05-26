@@ -16,6 +16,9 @@
     .gripe-btn:hover {
         /*text-decoration: underline;*/
     }
+.gripe-reaction{
+    height:60px;
+}
 
 .gripe-btn-gripe {
     background-image: url('../images/reactionsImages/angry.gif');
