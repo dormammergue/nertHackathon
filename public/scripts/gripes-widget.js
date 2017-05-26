@@ -168,7 +168,7 @@ function buildGripe(rant) {
             },
             {
                 className: "self-righteous-prick",
-                displayName: "Self Righteous Prick",
+                displayName: "Prick",
                 imagePath: imageFolderPath + "self-righteous.jpg",
                 color: "blue",
                 count: 0
