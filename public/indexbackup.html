@@ -48,7 +48,7 @@
                     <ul class="list">
                         <br><br>
                         <h5><strong>FEATURED Stupid Social Network Channels</strong></h5>
-                        <li><span id='facebook'>Wastebook</span></li>
+                        <li><button id='facebook'>Wastebook</button></li>
                         <li>Shitter</li>
                         <li>StinkedIn</li>
                         <li>Whyspace</li>
@@ -92,8 +92,15 @@
 </body>
 
 <script>
+
+    $('#facebook').click()
     //Get all rants
 
+
+function displayFacebook(){
+    $(`.${rant.class}`).find
+
+}
     function buildAndDisplayRant(rant) {
         $(".display-results").after(
             `<div id='${rant._id}' class='newsfeed, ${rant.channel}'>
@@ -150,7 +157,6 @@
     }
 
     function buildComment(rant) {
-        console.log("RANT ID", rant._id);
         var newComment =
             `<div style="display: none;" class="new-link" name="link[]" >
                     <textarea cols="40" rows="1"class="newResponse" placeholder="enter a response!"/>
