@@ -1,59 +1,122 @@
 
-    /*TODO List
-        1) Hook up with DB to display number
-        2)
+/*TODO List
+    1) Hook up with DB to display number
+    2)
 
-    */
+    //goal get total of all gripes to display
 
-    // function getGripesFromRant(rant) {
-    //         var gripes = [];
-    //         Object.keys(rant.listOfGripes).map(function (key) {
-    //             var gripe = {};
-    //             gripe[key] = rant.listOfGripes[key];
-    //             gripes.push(gripe);
-    //         });
-    //         return gripes;
-    //     }
+    //have accepted gripe types, then check db against those gripe types
 
-        $.get("/api/rants", function (data) {
-            var rant = data[0];
+*/
 
-            //console.log("Gripes", getGripesFromRant(rant));
+function getGripesFromRant(rant) {
+    var gripes = [];
 
-            //TODO: get reaction types and images from DB
-            var imageFolderPath = "../images/reactionsImages/";
-            //make sure class name and display name are different (not just case) or one will overwrite the other class
-            var reactions = [
-                {
-        className: "-angry",
-                    displayName: "Angry",
-                    imagePath: imageFolderPath + "angry.gif",
-                    color:"red"
-                },
-                {
-        className: "-annoyed",
-                    displayName: "Annoyed",
-                    imagePath: imageFolderPath + "annoyed.gif",
-                    color: "pink"
-                },
-                {
-        className: "-self-righteous-prick",
-                    displayName: "Self Righteous Prick",
-                    imagePath: imageFolderPath + "self-righteous.jpg",
-                    color: "blue"
-                },
-                {
-        className: "-depressed",
-                    displayName: "Depressed",
-                    imagePath: imageFolderPath + "depressed.gif",
-                    color: "green"
-                }
-            ]
+    //get gripe, value pairs from db and format into different objects on front end
+    Object.keys(rant.listOfGripes).map(function (key) {
+        var gripe = {
+            type: key,
+            count: rant.listOfGripes[key]
+        };
+        gripes.push(gripe);
+    });
+    return gripes;
+}
 
 
-            function createBaseHtml() {
-                //start with a div with the class gripe-reaction and generate html in that
-                var baseHtml = `
+//function makeGripeObject(gripe) {
+//    return {
+//        className: gripeData.
+//    }
+//}
+//function getGripeKey(gripe) {
+//    return Object.keys(gripe)[0];
+//}
+
+function macthGripesWithReactions(reactions, gripes) {
+    //loop through each reaction and see if it matches a gripe
+    //if reaction display name == gripe name then it's a match'
+
+
+    for (gripe of gripes) {
+        for (reaction of reactions) {
+            
+            if (gripe.type.toLowerCase() === reaction.className.toLowerCase()) {
+                console.log("MATCH");
+                //if we have a match we don't need to check others
+                reaction.count = gripe.count;
+                break;
+            }
+        }
+    }
+}
+
+function getAndDisplayTotalGripes(gripes) {
+    var totalGripesCount = 0;
+    for (gripe of gripes) {
+        totalGripesCount += gripe.count;
+    }
+    $(".overall-gripe-count").text(totalGripesCount);
+    return totalGripesCount;
+}
+
+
+$.get("/api/rants", function (data) {
+    var rant = data[0];
+
+    console.log("Gripes", getGripesFromRant(rant));
+    var gripes = getGripesFromRant(rant)
+    //console.log(Object.keys(gripes[0])[0]);
+    getAndDisplayTotalGripes(gripes);
+
+    $('.overall-gripe-count').text(gripes[0].gripeNumber);
+
+
+
+
+
+    //TODO: get reaction types and images from DB
+    var imageFolderPath = "../images/reactionsImages/";
+    //make sure class name and display name are different (not just case) or one will overwrite the other class
+    var reactions = [
+        {
+            className: "angry",
+            displayName: "Angry",
+            imagePath: imageFolderPath + "angry.gif",
+            color: "red",
+            count:0
+        },
+        {
+            className: "annoyed",
+            displayName: "Annoyed",
+            imagePath: imageFolderPath + "annoyed.gif",
+            color: "pink",
+            count:0
+        },
+        {
+            className: "self-righteous-prick",
+            displayName: "Self Righteous Prick",
+            imagePath: imageFolderPath + "self-righteous.jpg",
+            color: "blue",
+            count: 0
+        },
+        {
+            className: "depressed",
+            displayName: "Depressed",
+            imagePath: imageFolderPath + "depressed.gif",
+            color: "green",
+            count: 0
+        }
+    ]
+
+
+    macthGripesWithReactions(reactions, gripes);
+    console.log(reactions);
+
+
+    function createBaseHtml() {
+        //start with a div with the class gripe-reaction and generate html in that
+        var baseHtml = `
                                 <!-- container div for reaction system -->
                                 <span class="gripe-btn">
         <!-- Default gripe button -->
@@ -64,23 +127,23 @@
                                     </ul>
     </span>
     `;
-                $(".gripe-reaction").append(baseHtml);
-            }
+        $(".gripe-reaction").append(baseHtml);
+    }
 
-            function createReactionsListHtml(reactions) {
-                //dynamically creates the html for the different types of reactions
-                var reactionsHtml = "";
+    function createReactionsListHtml(reactions) {
+        //dynamically creates the html for the different types of reactions
+        var reactionsHtml = "";
 
-                //loop through each reaction and create a tag for it
-                for (reaction of reactions) {
-        createReactionsCss(reaction)
-                    var reactionHtml = `<li class="reaction reaction-${reaction.className}" data-emotion="${reaction.className}" data-reaction="${reaction.displayName}"></li>`
-                    reactionsHtml += reactionHtml;
-                }
-                $(".reactions-box").append(reactionsHtml);
-            }
+        //loop through each reaction and create a tag for it
+        for (reaction of reactions) {
+            createReactionsCss(reaction)
+            var reactionHtml = `<li class="reaction reaction-${reaction.className}" data-emotion="${reaction.className}" data-reaction="${reaction.displayName}">${reaction.count}</li>`
+            reactionsHtml += reactionHtml;
+        }
+        $(".reactions-box").append(reactionsHtml);
+    }
 
-            function createReactionsCss(reaction) {
+    function createReactionsCss(reaction) {
 
         $("<style>")
             .prop("type", "text/css")
@@ -90,7 +153,16 @@
                             transition-delay: .25s;
                             background-image: url('${reaction.imagePath}');
                             background-color: ${reaction.color};
-                            border: 2px red solid;
+                            border: 5px red solid;
+                            color: white;
+                            font-size: 1.5em;
+                            text-align: right;
+                            -webkit-text-stroke: 2px black;
+                            font-family: arial;
+                            font-weight:bold;
+
+
+    
                         }
                         .reaction-${reaction.className}::before {
                             content: '${reaction.displayName}'
@@ -114,32 +186,33 @@
     }
 
 
-            $(document).ready(function () {
+    $(document).ready(function () {
 
         createBaseHtml();
-    createReactionsListHtml(reactions);
+        console.log("A");
+        createReactionsListHtml(reactions);
+        console.log("B");
 
+        $(".reaction").on("click", function () {   // gripe click
+            var data_reaction = $(this).attr("data-reaction");
+            var data_emotion = $(this).attr("data-emotion");
+            //$(".gripe-details").html("You, Arkaprava Majumder and 1k others");
+            $(".gripe-btn-emo").removeClass().addClass('gripe-btn-emo').addClass('gripe-btn-' + data_emotion.toLowerCase());
+            $(".gripe-btn-text").text(data_reaction).removeClass().addClass('gripe-btn-text').addClass('gripe-btn-text-' + data_reaction.toLowerCase()).addClass("active");;
 
-                $(".reaction").on("click", function () {   // gripe click
-                    var data_reaction = $(this).attr("data-reaction");
-                    var data_emotion = $(this).attr("data-emotion");
-                    //$(".gripe-details").html("You, Arkaprava Majumder and 1k others");
-                    $(".gripe-btn-emo").removeClass().addClass('gripe-btn-emo').addClass('gripe-btn-' + data_emotion.toLowerCase());
-                    $(".gripe-btn-text").text(data_reaction).removeClass().addClass('gripe-btn-text').addClass('gripe-btn-text-' + data_reaction.toLowerCase()).addClass("active");;
-
-                    if (data_reaction == "gripe")
-                        $(".gripe-emo").html('<span class="gripe-btn-gripe"></span>');
-                    else
-                        $(".gripe-emo").html('<span class="gripe-btn-gripe"></span><span class="gripe-btn-' + data_reaction.toLowerCase() + '"></span>');
-                });
-
-                $(".gripe-btn-text").on("click", function () { // undo gripe click
-                    if ($(this).hasClass("active")) {
-        $(".gripe-btn-text").text("Gripe").removeClass().addClass('gripe-btn-text');
-    $(".gripe-btn-emo").removeClass().addClass('gripe-btn-emo').addClass("gripe-btn-default");
-                        $(".gripe-emo").html('<span class="gripe-btn-gripe"></span>');
-                        $(".gripe-details").html("Arkaprava Majumder and 1k others");
-                    }
-                })
-            });
+            if (data_reaction == "gripe")
+                $(".gripe-emo").html('<span class="gripe-btn-gripe"></span>');
+            else
+                $(".gripe-emo").html('<span class="gripe-btn-gripe"></span><span class="gripe-btn-' + data_reaction.toLowerCase() + '"></span>');
         });
+
+        $(".gripe-btn-text").on("click", function () { // undo gripe click
+            if ($(this).hasClass("active")) {
+                $(".gripe-btn-text").text("Gripe").removeClass().addClass('gripe-btn-text');
+                $(".gripe-btn-emo").removeClass().addClass('gripe-btn-emo').addClass("gripe-btn-default");
+                $(".gripe-emo").html('<span class="gripe-btn-gripe"></span>');
+                $(".gripe-details").html("Arkaprava Majumder and 1k others");
+            }
+        })
+    });
+});
